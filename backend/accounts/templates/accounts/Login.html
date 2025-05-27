@@ -1,20 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Вхід адміністратора</title>
-    <link rel="stylesheet" href="Login.css">
-</head>
-<body>
-    <h2>Sing in</h2>
-    <form method="post" action="">
-        <label>Логін:</label>
-        <input type="text" name="username" required><br>
-        <label>Пароль:</label>
-        <input type="password" name="password" required><br>
-        <button type="submit">Увійти</button>
-    </form>
-    <?php if ($error): ?>
-        <p style="color:rgb(0, 0, 0);"><?= $error ?></p>
-    <?php endif; ?>
-</body>
-</html>
+<h2>Вхід</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Увійти</button>
+</form>
+<a href="{% url 'register' %}">Реєстрація</a>
