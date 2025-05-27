@@ -2,10 +2,13 @@ body{
     
 }
 
-header{
+.profile{
     width: 65%;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
 }
 
 .img_account{
@@ -27,6 +30,4 @@ header{
 .text_account{
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    
 }
