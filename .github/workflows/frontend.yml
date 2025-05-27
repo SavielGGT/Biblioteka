@@ -1,0 +1,29 @@
+name: Frontend HTML/JS Check
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+
+jobs:
+  check-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Validate HTML files
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tidy
+          find frontend -name "*.html" -exec tidy -qe {} \;
+
+      - name: Check JS files for syntax errors
+        run: |
+          find frontend -name "*.js" -exec bash -c 'echo "Checking {}"; node --check {}' \;
