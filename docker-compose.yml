@@ -3,6 +3,7 @@ version: "3.9"
 services:
   db:
     image: postgres:17.5
+    restart: alweys
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: .env
