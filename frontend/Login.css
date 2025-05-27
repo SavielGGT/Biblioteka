@@ -1,66 +1,57 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 30px;
-    background-color: #f8f8f8;
-}
-
-h2, h3, h4 {
-    color: #140808;
-}
-
-form, table {
-    margin-top: 20px;
-}
-
-input[type="text"], input[type="password"], select {
-    padding: 8px;
+    background-color: #eef2f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
     width: 300px;
-    margin-bottom: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #0778ea;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  #username {
+    background-color: #f0f8ff;
+    border: 1px solid #a0c4ff;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1cce08;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #4b6679;
-}
-
-table {
-    background-color: rgb(0, 0, 0);
-    border-collapse: collapse;
-    width: 80%;
-}
-
-th {
-    background-color: #234c67;
-    color: white;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #bd8585;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav li {
-    margin: 8px 0;
-}
-
-a {
-    text-decoration: none;
-    color: #007acc;
-}
-
-a:hover {
-    text-decoration: underline;
-}
+  }
+  
+  button:hover {
+    background-color: #0ed115;
+  }
