@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Вхід</title>
-  <link rel="stylesheet" href="Login.css">
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
   <div class="container">
@@ -16,11 +16,14 @@
       <div class="form-group">
         <label for="password">Пароль</label>
         <input type="password" id="password" name="password" required>
+        <div class="forgot-password">
+          <a href="forgot-password.html">Забули пароль?</a>
+        </div>
       </div>
       <button type="submit">Увійти</button>
     </form>
     <div id="loginResult"></div>
   </div>
-  <script src="Login.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>

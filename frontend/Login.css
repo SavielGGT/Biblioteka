@@ -53,5 +53,20 @@ body {
   }
   
   button:hover {
-    background-color: #0ed115;
+    background-color: #00ff08;
+  }
+
+  .forgot-password {
+    text-align: right;
+    margin-top: 5px;
+  }
+  
+  .forgot-password a {
+    font-size: 0.9em;
+    color: #2196F3;
+    text-decoration: none;
+  }
+  
+  .forgot-password a:hover {
+    text-decoration: underline;
   }
