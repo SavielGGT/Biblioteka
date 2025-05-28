@@ -28,3 +28,5 @@ const deleteAvatar = document.querySelector('delete_avatar');
 changeAvatar.addEventListener('click', () =>{
     inputAvatar.click();
 })
+
+//
