@@ -8,7 +8,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: .env
-
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
   backend:
     build: ./backend
     container_name: django_app
