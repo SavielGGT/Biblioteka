@@ -3,35 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Вхід</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Login.css">
+  <script src="Login.js"></script>
 </head>
 <body>
-  <h2>Вхід</h2>
-  <form id="loginForm">
-    <input type="text" id="username" placeholder="Ім'я користувача" required><br>
-    <input type="password" id="password" placeholder="Пароль" required><br>
-    <button type="submit">Увійти</button>
-  </form>
-  <script>
-    document.getElementById('loginForm').onsubmit = async function(e) {
-      e.preventDefault();
-      const res = await fetch('/api/accounts/login/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: document.getElementById('username').value,
-          password: document.getElementById('password').value
-        })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('access', data.access);
-        localStorage.setItem('refresh', data.refresh);
-        window.location.href = 'account_client.html';
-      } else {
-        alert('Помилка входу');
-      }
-    }
-  </script>
+  <div class="container">
+    <h2>Вхід до акаунту</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Ім’я користувача або Email</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required>
+        <div class="forgot-password">
+          <a href="Password_recovery.html">Забули пароль?</a>
+        </div>
+      </div>
+      <button type="submit">Увійти</button>
+    </form>
+    <div id="loginResult"></div>
+  </div>
 </body>
 </html>
