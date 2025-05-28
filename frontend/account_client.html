@@ -11,8 +11,12 @@
     <header>
         <div class="profile">
         <div class="img_account">
-            <img src="account_img.png" alt="Аватарка аккаунта">
-            <button type="submit">Змінити аватарку</button>
+            <img id="avatar" src="account_img.png" alt="Аватарка аккаунта">
+            <input type="file" id="avatarinput" hidden accept="image/*">
+            <div class="avatar_buttons">
+                <button class="change_avatar">Змінити аватарку</button>
+                <button class="delete_avatar">Видалити аватарку</button>
+            </div>
         </div>
         <div class="text_account">
             <h1>Профіль</h1>
