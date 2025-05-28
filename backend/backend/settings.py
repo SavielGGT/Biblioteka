@@ -16,7 +16,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts', 
     'rest_framework',
     'rest_framework_simplejwt',
     'accounts', # наш додаток
@@ -62,16 +61,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Підключення до PostgreSQL
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Biblioteka_db',         # заміни на свою назву бази
-        'USER': 'postgres',              # заміни на свого користувача
-        'PASSWORD': 'ASDfgh123456',      # заміни на свій пароль
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+
+DEBUG = bool(int(os.getenv('DEBUG', 0)))
+
 
 # Паролі
 AUTH_PASSWORD_VALIDATORS = [

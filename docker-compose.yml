@@ -2,14 +2,16 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:17.5
-    restart: alweys
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: .env
 
   backend:
     build: ./backend
+    container_name: django_app
     command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./backend:/app
@@ -21,6 +23,7 @@ services:
 
   frontend:
     build: ./frontend
+    container_name: front
     ports:
       - "4000:4000"
   nginx:
