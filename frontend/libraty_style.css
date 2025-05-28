@@ -1,0 +1,23 @@
+body{
+    margin: 0;
+    font-family: Unbounded;
+}
+
+
+.heading{
+    background-color: #E7A15A;
+    justify-content: center;
+}
+
+
+.heading>img{
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 75px;
+    height: 75px;
+    margin-top: 55px;
+}
+
+h1{
+    text-align: center;
+}
