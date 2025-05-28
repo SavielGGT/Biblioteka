@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог книг</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Бібліотека</h1>
+    <input type="text" id="searchInput" placeholder="Пошук за назвою...">
+    
+    <select id="genreSelect">
+      <option value="">Усі жанри</option>
+      <option value="драма">Драма</option>
+      <option value="фантастика">Фантастика</option>
+      <option value="детектив">Детектив</option>
+    </select>
+
+    <input type="number" id="yearFromInput" placeholder="Рік від">
+    <input type="number" id="yearToInput" placeholder="Рік до">
+    <button id="filterBtn">Фільтрувати</button>
+  </header>
+
+  <main>
+    <div id="booksContainer" class="books-grid">
+      <!-- Книги зʼявлятимуться тут -->
+    </div>
+  </main>
+
+  <script src="../static/js/script.js"></script>
+</body>
+</html>
