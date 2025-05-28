@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Шлях до проєкту
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Безпека
 SECRET_KEY = 'ASDfgh123456'
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -16,12 +18,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts', 
-    'rest_framework',
+
+    # Треті сторони
+    'rest_framework', 
     'rest_framework_simplejwt',
-    'accounts', # наш додаток
+    'corsheaders',
+
+    # Ваші додатки
+    'accounts',
+    'books',
 ]
 
+# REST Framework + JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -31,6 +39,7 @@ REST_FRAMEWORK = {
 
 # Мідлвари
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Додано для CORS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -46,7 +55,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # можна додати свій шаблонний каталог
+        'DIRS': [BASE_DIR / 'frontend'],  # Папка з HTML-шаблонами
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -61,19 +70,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Підключення до PostgreSQL
+# База даних PostgreSQL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Biblioteka_db',         # заміни на свою назву бази
-        'USER': 'postgres',              # заміни на свого користувача
-        'PASSWORD': 'ASDfgh123456',      # заміни на свій пароль
+        'NAME': 'Biblioteka_db',
+        'USER': 'postgres',
+        'PASSWORD': 'ASDfgh123456',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
-# Паролі
+# Парольна політика
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -91,9 +100,38 @@ USE_TZ = True
 
 # Статичні файли
 STATIC_URL = 'static/'
+#STATICFILES_DIRS = [BASE_DIR / 'frontend']
 
-# Шляхи входу/виходу
+# Переадресації після логіну
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+# Автоматичне поле
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# JWT settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'noreply@biblioteka.local'
