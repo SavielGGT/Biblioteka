@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourProfile</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <div class="profile">
+        <div class="img_account">
+            <img src="account_img.png" alt="Аватарка аккаунта">
+            <button type="submit">Змінити аватарку</button>
+        </div>
+        <div class="text_account">
+            <h1>Профіль</h1>
+            <p>Ім'я користувача:</p>
+            <input type="text" name="" id="">
+            <p>Email: </p>
+            <input type="text" name="" id="">
+            <a href="#" id="open_pop_up">Змінити пароль</a>
+        </div>
+        </div>
+    </header>
+
+    <div class="pop_up" id ="pop_up">
+        <div class="pop_up_container">
+            <div class="pop_up_body" id="pop_up_body">
+                <p>Оновіть пароль</p>
+                <p>Введіть новий пароль</p>
+                <form>
+                    <input type="text" placeholder="Попередній пароль">
+                    <input type="text" placeholder="Новий пароль">
+                    <input type="text" placeholder="Підтвердити пароль">
+                    <button type="submit">Змінити пароль</button>
+                </form>
+                 <div class="pop_up_close" id="pop_up_close">&#10006</div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
