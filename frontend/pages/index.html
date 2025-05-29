@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Каталог книг</title>
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <header>
-    <h1>Бібліотека</h1>
+    <h1>Нкб-бібліотека</h1>
+    <div class="sheard-filter">
     <input type="text" id="searchInput" placeholder="Пошук за назвою...">
     
     <select id="genreSelect">
@@ -20,10 +22,11 @@
     <input type="number" id="yearFromInput" placeholder="Рік від">
     <input type="number" id="yearToInput" placeholder="Рік до">
     <button id="filterBtn">Фільтрувати</button>
+    </div>
   </header>
 
   <main>
-    <div id="booksContainer" class="books-grid">
+    <div id="booksContainer" class="books_grid">
       <!-- Книги зʼявлятимуться тут -->
     </div>
   </main>

@@ -37,3 +37,94 @@
   object-fit: cover;
   margin-bottom: 1rem;
 }
+
+/* -body для всіх html- */
+
+body{
+  margin: 0;
+  font-family: Unbounded;
+}
+
+/* -------------------- */
+
+
+/*- style для index.htlm -*/
+
+header{
+  background-color: #E7A15A;
+  padding: 10px;
+  height: 121px;
+  border-bottom-right-radius: 45px;
+  border-bottom-left-radius: 45px;
+}
+
+h1{
+  margin: 0;
+  margin-top: 10px;
+  text-align: center;
+  color: white;
+}
+
+.sheard-filter{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 17px;
+}
+
+.sheard-filter input, .sheard-filter option, .sheard-filter button{
+  padding: 5px 10px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+}
+
+select{
+  border-radius: 10px;
+}
+
+main{
+  height: 600px;
+}
+
+.books_grid{
+   background-image: url(zelya.png);
+}
+
+/* ---------------------- */
+
+
+/* - style для login.html - */
+
+
+
+
+h2{
+  font-size: 50px;
+  text-align: center;
+  margin-top: 43px;
+}
+
+.login_block{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background-color: #E7A15A;
+  border-bottom-right-radius: 45px;
+  border-bottom-left-radius: 45px;
+}
+
+.login_block input, .login_block button{
+  padding: 5px 10px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+}
+
+/* -------------------------*/
+
+
+
+/* - style для адмін-панелі - */
+
