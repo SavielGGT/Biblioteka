@@ -253,9 +253,78 @@ body.background_admin{
 
 /* - style для профіля корис. - */
 
+body.profile_body {
+  background-image: url(mainecraft.jpg); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+}
+
+.profile_container {
+  max-width: 500px;
+  margin: 80px auto;
+  background-color: rgba(238, 238, 238, 0.519); 
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+.profile_container h2,
+.profile_container h3 {
+  text-align: center;
+  color: #333;
+}
+
+#profile_info p {
+  font-size: 18px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+#password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+#password-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+#password-form button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #574646;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#password-form button:hover {
+  background-color: #302828;
+}
+
+#password-message {
+  color: green;
+  text-align: center;
+}
 
 
 
+.profile_container>h3{
+  color: black;
+}
+
+.profile_container>h2{
+  color: rgb(0, 0, 0);
+}
 
 /* ---------------------------- */
 
