@@ -72,9 +72,29 @@ main{
   height: 600px;
 }
 
-.books_grid{
-   background-image: url(zelya.png);
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  gap: 10px;
 }
+
+.auth-buttons button {
+  padding: 5px 15px;
+  font-size: 14px;
+  background-color: #7C6363;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-buttons button:hover {
+  background-color: #554444;
+}
+
 
 /* ---------------------- */
 
@@ -309,6 +329,30 @@ body.profile_body {
 .profile_container>h2{
   color: rgb(0, 0, 0);
 }
+
+.profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px 30px 0;
+}
+
+.profile-buttons a {
+  padding: 8px 16px;
+  font-size: 15px;
+  background-color: white;
+  color: #574646;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-buttons a:hover {
+  background-color: #f0f0f0;
+  border-color: #aaa;
+}
+
 
 /* ---------------------------- */
 
