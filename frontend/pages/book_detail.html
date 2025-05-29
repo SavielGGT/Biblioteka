@@ -5,13 +5,21 @@
   <title>Деталі книги</title>
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
-<body>
+<body class="book-details-page">
   <main>
     <div id="bookDetails" class="book-details">
-      <!-- Тут буде контент -->
-    </div>
+  <img src="https://via.placeholder.com/300x450" alt="Обкладинка книги">
+
+<div class="info">
+  <h2>{{ book.title }}</h2>
+  <p><span class="label">Жанр:</span> {{ book.genre }}</p>
+  <p><span class="label">Рік:</span> {{ book.year }}</p>
+  <p><span class="label">Опис:</span> {{ book.description }}</p>
+</div>
+</div>
+
   </main>
 
-  
+  <script src="../static/js/script.js"></script>
 </body>
 </html>
