@@ -1,31 +1,13 @@
-<!-- pages/profile.html -->
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Мій профіль</title>
+  <meta charset="UTF-8" />
+  <title>Профіль</title>
   <link rel="stylesheet" href="../static/css/style.css" />
 </head>
-<body class="profile_body">
-  <div class="profile_container">
-    <h2>Мій профіль</h2>
-
-    <div id="profile_info">
-      <p><strong>Ім’я:</strong> <span id="profile-name">Завантаження...</span></p>
-      <p><strong>Email:</strong> <span id="profile-email">Завантаження...</span></p>
-    </div>
-
-    <hr>
-
-    <h3>Зміна паролю</h3>
-    <form id="password-form">
-      <input type="password" id="old-password" placeholder="Старий пароль" required />
-      <input type="password" id="new-password" placeholder="Новий пароль" required />
-      <button type="submit">Змінити пароль</button>
-      <p id="password-message"></p>
-    </form>
-  </div>
-
+<body>
+  <h1>Профіль користувача</h1>
+  <div id="profile-data"></div>
   <script src="../static/js/script.js"></script>
 </body>
 </html>

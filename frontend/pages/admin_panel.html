@@ -1,50 +1,14 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Адмін-панель</title>
-  <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8" />
+  <title>Адмін панель</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
 </head>
-<body class="background_admin">
-  <main>
-    
-    <section id="statusMessage"></section>
-
-    <section id="bookFormSection">
-      <h2 id="formTitle">Додати нову книгу</h2>
-
-   
-      <form id="bookForm">
-        <div class="form_admin">
-          <div class="form_left">
-
-        <input type="hidden" id="bookId">
-        <input type="text" id="titleInput" placeholder="Назва" required>
-        <input type="text" id="genreInput" placeholder="Жанр">
-        <input type="number" id="yearInput" placeholder="Рік">
-        <textarea id="descriptionInput" placeholder="Опис"></textarea>
-          </div>
-
-          <div class="form_rigth">
-        <input type="url" id="coverInput" placeholder="Посилання на обкладинку">
-        </div>
-        
-        </div>
-
-          <div class="button_form">
-        <button type="submit">Зберегти</button>
-        <button type="button" id="cancelEditBtn" style="display:none;">Скасувати</button>
-        </div>
-
-      </form>
-    </section>
-
-    <section id="adminBooksList">
-      <h2>Список книг</h2>
-      <div id="adminBooksContainer" class="books-grid"></div>
-    </section>
-  </main>
-
+<body>
+  <h1>Адміністрування</h1>
+  <button onclick="exportBooks()">📤 Експорт книг</button>
+  <button onclick="scrapeBooks()">📥 Парсинг книг</button>
   <script src="../static/js/script.js"></script>
 </body>
 </html>

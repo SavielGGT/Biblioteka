@@ -1,25 +1,13 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Деталі книги</title>
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/style.css" />
 </head>
-<body class="book-details-page">
-  <main>
-    <div id="bookDetails" class="book-details">
-  <img src="https://via.placeholder.com/300x450" alt="Обкладинка книги">
-
-<div class="info">
-  <h2>{{ book.title }}</h2>
-  <p><span class="label">Жанр:</span> {{ book.genre }}</p>
-  <p><span class="label">Рік:</span> {{ book.year }}</p>
-  <p><span class="label">Опис:</span> {{ book.description }}</p>
-</div>
-</div>
-
-  </main>
-
+<body>
+  <h1>Інформація про книгу</h1>
+  <div id="book-detail"></div>
   <script src="../static/js/script.js"></script>
 </body>
 </html>
