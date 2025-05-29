@@ -8,18 +8,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file: .env
+
   mailhog:
     image: mailhog/mailhog
     container_name: mailhog
     ports:
       - "1025:1025"  # SMTP
       - "8025:8025"  # Web UI
+
   backend:
     build: ./backend
     container_name: django_app
     command: >
       sh -c "python manage.py migrate &&
-             gunicorn library.wsgi:application --bind 0.0.0.0:8000"    
+             gunicorn library.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./backend:/app
     ports:
@@ -28,17 +30,25 @@ services:
       - db
     env_file: .env
 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+
+    # frontend має просто збирати HTML + static
+
   nginx:
     image: nginx:latest
     container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./frontend:/usr/share/nginx/html       # HTML + JS
-      - ./backend/static:/app/static            # Django stat
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/pages:/usr/share/nginx/html:ro
+      - ./frontend/static:/static:ro
+
     depends_on:
       - backend
+      - frontend
 
 volumes:
   postgres_data:
