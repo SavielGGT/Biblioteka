@@ -36,7 +36,7 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./frontend:/usr/share/nginx/html       # HTML + JS
-      - ./backend/static:/app/static            # Django static
+      - ./backend/static:/app/static            # Django stat
     depends_on:
       - backend
 
