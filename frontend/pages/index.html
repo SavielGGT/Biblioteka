@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <title>Книги</title>
-  <link rel="stylesheet" href="../static/css/style.css" />
+  <meta charset="UTF-8">
+  <title>Каталог книг</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-  <h1>Список книг</h1>
-  <div id="filters">
-    <input type="text" id="search" placeholder="Пошук..." />
-    <select id="genre">
-      <option value="">Всі жанри</option>
-      <option value="Fantasy">Фентезі</option>
-      <option value="Sci-fi">Наукова фантастика</option>
-    </select>
-  </div>
-  <div id="book-list"></div>
-  <script src="../static/js/script.js"></script>
+  <header>
+    <h1>Нкб-бібліотека</h1>
+    <div class="sheard-filter">
+      <input type="text" id="searchInput" placeholder="Пошук за назвою...">
+      <select id="genreSelect">
+        <option value="">Усі жанри</option>
+        <option value="драма">Драма</option>
+        <option value="фантастика">Фантастика</option>
+        <option value="детектив">Детектив</option>
+      </select>
+      <input type="number" id="yearFromInput" placeholder="Рік від">
+      <input type="number" id="yearToInput" placeholder="Рік до">
+      <button id="filterBtn">Фільтрувати</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="booksContainer" class="books_grid">
+      <!-- Книги зʼявлятимуться тут -->
+    </div>
+  </main>
 </body>
 </html>
