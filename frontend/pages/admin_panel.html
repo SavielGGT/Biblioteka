@@ -5,23 +5,37 @@
   <title>Адмін-панель</title>
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
-<body>
+<body class="background_admin">
   <main>
     
     <section id="statusMessage"></section>
 
     <section id="bookFormSection">
       <h2 id="formTitle">Додати нову книгу</h2>
+
+   
       <form id="bookForm">
+        <div class="form_admin">
+          <div class="form_left">
+
         <input type="hidden" id="bookId">
         <input type="text" id="titleInput" placeholder="Назва" required>
-        <input type="text" id="authorInput" placeholder="Автор" required>
         <input type="text" id="genreInput" placeholder="Жанр">
         <input type="number" id="yearInput" placeholder="Рік">
         <textarea id="descriptionInput" placeholder="Опис"></textarea>
+          </div>
+
+          <div class="form_rigth">
         <input type="url" id="coverInput" placeholder="Посилання на обкладинку">
+        </div>
+        
+        </div>
+
+          <div class="button_form">
         <button type="submit">Зберегти</button>
         <button type="button" id="cancelEditBtn" style="display:none;">Скасувати</button>
+        </div>
+
       </form>
     </section>
 

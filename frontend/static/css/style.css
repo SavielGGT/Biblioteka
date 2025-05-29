@@ -97,29 +97,75 @@ main{
 
 /* - style для login.html - */
 
-
-
-
 h2{
   font-size: 50px;
   text-align: center;
   margin-top: 43px;
+  color: white;
 }
 
-.login_block{
+.login_text{
   display: flex;
   justify-content: center;
   padding: 10px;
-  background-color: #E7A15A;
-  border-bottom-right-radius: 45px;
-  border-bottom-left-radius: 45px;
+  background-color: #614e4e;
 }
 
-.login_block input, .login_block button{
+.form_login{
+  background-image: url(books.jpg);
+  height: 720px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 25px;
+  margin-top: 185px;
+}
+
+.form_login input, .form_login button{
   padding: 5px 10px;
-  font-size: 15px;
+  font-size: 20px;
   border-radius: 10px;
   border: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
+  
+}
+
+#login-form>button{
+  background-color: #7C6363;
+  color: white;
+  font-family: Unbounded;
+}
+
+.form_wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  max-width: 400px;
+}
+
+
+.contacts_login{
+  text-align: center;
+  color: white;
+  font-weight: auto;
+  margin-top: auto;
+  padding: 10px;
+}
+
+.contacts_login>p{
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
 }
 
 /* -------------------------*/
@@ -128,3 +174,93 @@ h2{
 
 /* - style для адмін-панелі - */
 
+#bookForm{
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: rgba(24, 23, 23, 0.814);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+.form_admin{
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.form_left, .form_rigth{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#bookForm input, #bookForm textarea{
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+#bookForm textarea{
+  resize: vertical;
+  min-height: 100px;
+}
+
+.button_form{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+
+.button_form button{
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #614e4e;
+  color: white;
+  cursor: pointer;
+}
+
+.button_form button:hover{
+  background-color: #342a2a;
+}
+
+body.background_admin{
+  background-image: url(gif2.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#bookFormSection>h2{
+  color: white;
+}
+
+
+#adminBooksList>h2{
+  color: white;
+}
+
+/* -------------------------- */
+
+
+
+/* - style для профіля корис. - */
+
+
+
+
+
+/* ---------------------------- */
+
+
+
+/* - style для опису книгу - * /
+
+/* ------------------------- * /
