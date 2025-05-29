@@ -9,6 +9,8 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by("-year")
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAdminOrReadOnly]
+
+    # Фільтрація та пошук
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['genre', 'year']
     search_fields = ['title', 'author']
