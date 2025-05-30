@@ -2,13 +2,14 @@ from django.core.management.base import BaseCommand
 import requests
 from bs4 import BeautifulSoup
 from books.models import Book
+from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
     help = 'Парсинг назв, зображень, жанру та року книг з однієї сторінки'
 
     def handle(self, *args, **kwargs):
-        url = "https://books.toscrape.com"
+        url = "https://books.toscrape.com/"
         headers = {
             'User-Agent': (
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
@@ -34,11 +35,11 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
             image_relative_url = book.select_one('img')['src']
-            image_url = f"{url}/{image_relative_url.lstrip('../')}"
+            image_url = urljoin(url, image_relative_url)
 
-            # Отримуємо посилання на детальну сторінку книги
+            # Відносне посилання на детальну сторінку
             detail_relative_url = book.h3.a['href']
-            detail_url = f"{url}/catalogue/{detail_relative_url.lstrip('../')}"
+            detail_url = urljoin(url, detail_relative_url)
 
             # Запит до детальної сторінки
             detail_resp = requests.get(detail_url, headers=headers)
@@ -53,7 +54,7 @@ class Command(BaseCommand):
                 breadcrumb = detail_soup.select('ul.breadcrumb li a')
                 genre = breadcrumb[2].text.strip() if len(breadcrumb) >= 3 else ''
 
-                # Спроба витягти рік — на цьому сайті немає, ставимо None
+                # Рік відсутній на сайті
                 year = None
 
             if not Book.objects.filter(title=title).exists():
