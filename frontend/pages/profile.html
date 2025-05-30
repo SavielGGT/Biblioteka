@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Мій профіль</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Профіль</title>
   <link rel="stylesheet" href="../static/css/style.css" />
 </head>
 <body class="profile_body">
-  <div class="profile-buttons">
-    <a href="index.html">Головна</a>
-    <a href="login.html">Вийти</a>
-  </div>
 
-  <div class="profile_container">
+<div class="profile_container">
   <h2>Профіль користувача</h2>
-
-  <div id="profile_info">
-    <p><strong>Ім'я:</strong> Іван Іванов</p>
-    <p><strong>Email:</strong> ivan@example.com</p>
+  <div id="profile-data">Завантаження...</div>
+  
+  <div class="profile-buttons">
+    <button id="logout-button">Вийти</button>
   </div>
 
-  <h3>Скидання пароля</h3>
-  <form id="password-form">
-    <input type="password" placeholder="Новий пароль" required />
-    <input type="password" placeholder="Повторіть новий пароль" required />
-    <button type="submit">Скинути пароль</button>
-    <p id="password-message"></p>
-  </form>
+  <button id="home-button" class="home-button">На головну</button>
 </div>
+
+<script src="../static/js/script.js"></script>
 </body>
 </html>

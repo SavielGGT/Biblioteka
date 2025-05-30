@@ -1,41 +1,65 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Каталог книг</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Головна</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
 </head>
 <body>
-  <header>
-    <h1>Нкб-бібліотека</h1>
 
-    <div class="auth-buttons">
-    <button id="loginBtn">Увійти</button>
-    <button id="profileBtn">Профіль</button>
+<header>
+  <h1>Моя бібліотека</h1>
+  <div class="auth-buttons">
+    <button id="open_pop_up">Реєстрація</button>
+    <button id="logout-button">Вийти</button>
+  </div>
+</header>
+
+<main>
+  <div class="sheard-filter">
+    <input id="search" placeholder="Пошук за назвою або автором" />
+    <select id="genre">
+      <option value="">Всі жанри</option>
+      <option value="fantasy">Фентезі</option>
+      <option value="science-fiction">Наукова фантастика</option>
+      <!-- інші жанри -->
+    </select>
+    <select id="year">
+      <option value="">Всі роки</option>
+      <option value="2023">2023</option>
+      <option value="2022">2022</option>
+      <!-- інші роки -->
+    </select>
   </div>
 
+  <div id="book-list" class="books-grid"></div>
+</main>
 
-    <div class="sheard-filter">
-      <input type="text" id="searchInput" placeholder="Пошук за назвою...">
-      <select id="genreSelect">
-        <option value="">Усі жанри</option>
-        <option value="драма">Драма</option>
-        <option value="фантастика">Фантастика</option>
-        <option value="детектив">Детектив</option>
-      </select>
-      <input type="number" id="yearFromInput" placeholder="Рік від">
-      <input type="number" id="yearToInput" placeholder="Рік до">
-      <button id="filterBtn">Фільтрувати</button>
+<!-- Попап реєстрації -->
+<div id="pop_up" class="pop_up">
+  <div class="pop_up_container">
+    <div id="pop_up_body" class="pop_up_body">
+      <span id="pop_up_close" class="pop_up_close">&times;</span>
+      <form id="register-form">
+        <label for="reg-email" class="input_label">Email</label>
+        <input id="reg-email" type="email" required />
+        
+        <label for="reg-firstname" class="input_label">Ім'я</label>
+        <input id="reg-firstname" type="text" required />
+        
+        <label for="reg-lastname" class="input_label">Прізвище</label>
+        <input id="reg-lastname" type="text" required />
+        
+        <label for="reg-password" class="input_label">Пароль</label>
+        <input id="reg-password" type="password" required />
+        
+        <button type="submit">Зареєструватися</button>
+      </form>
     </div>
-  </header>
+  </div>
+</div>
 
-  <main>
-    <div id="booksContainer" class="books_grid">
-      <!-- Книги зʼявлятимуться тут -->
-    </div>
-  </main>
-
-  
+<script src="../static/js/script.js"></script>
 </body>
 </html>

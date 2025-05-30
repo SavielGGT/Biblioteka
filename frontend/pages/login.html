@@ -2,54 +2,49 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
-  <title>Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вхід</title>
   <link rel="stylesheet" href="../static/css/style.css" />
 </head>
-<body>
-  <div class="login_text">
-    <h2>Вхід до системи</h2>
-  </div>
-  <div class="form_login">
-    <div class="form_wrapper">
-      <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Пароль" required />
-        <a href="" id="open_pop_up">Регістрація</a>
-        <button type="submit">Увійти</button>
-        <p id="login-error" class="error-message"></p>
-      </form>
+<body class="form_login">
 
-      <div class="pop_up" id="pop_up">
-        <div class="pop_up_container">
-            <div class="pop_up_body" id="pop_up_body">
-            <p>Регістрація</p>
+  <h2>Увійти</h2>
 
-            <form action="">
-              <input type="text" placeholder="Ім'я">
-              <input type="text" placeholder="email">
-              <input type="text" placeholder="Пароль">
-              <input type="text" placeholder="Повторити пароль">
-              <button type="submit">Зареіструватися</button>
-            </form>
+  <form id="login-form">
+    <input id="email" type="email" placeholder="Email" required />
+    <input id="password" type="password" placeholder="Пароль" required />
+    <button type="submit">Увійти</button>
+  </form>
 
-            <div class="pop_up_close" id="pop_up_close">&#10006</div>
-            </div>
-        </div>
-    </div>
-
-      <div class="forgot-password">
-     <button type="submit">Забули пароль?</button>
+  <div style="text-align: center; margin-top: 15px;">
+    <button id="open_pop_up">Реєстрація</button>
   </div>
 
+  <!-- Попап реєстрації без змін -->
+  <div id="pop_up" class="pop_up">
+    <div class="pop_up_container">
+      <div id="pop_up_body" class="pop_up_body">
+        <span id="pop_up_close" class="pop_up_close">&times;</span>
+        <form id="register-form">
+          <label for="reg-email" class="input_label">Email</label>
+          <input id="reg-email" type="email" required />
 
-      <div class="contacts_login">
-        <p>Контакти:</p>
-        <p>email: NkbSupport@gmail.com</p>
+          <label for="reg-firstname" class="input_label">Ім'я</label>
+          <input id="reg-firstname" type="text" required />
+
+          <label for="reg-lastname" class="input_label">Прізвище</label>
+          <input id="reg-lastname" type="text" required />
+
+          <label for="reg-password" class="input_label">Пароль</label>
+          <input id="reg-password" type="password" required />
+
+          <button type="submit">Зареєструватися</button>
+        </form>
       </div>
     </div>
   </div>
 
-    <script src="../static/js/script.js"></script>
+  <script src="../static/js/script.js"></script>
 </body>
+
 </html>
