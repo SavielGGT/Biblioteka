@@ -33,31 +33,34 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
 
-            # Формуємо повний URL до зображення
+            # Отримуємо "сирий" шлях до картинки, типу ../../media/cache/...
             image_relative_url = book.select_one('img')['src']
-            cleaned_image_url = image_relative_url.replace('../../', '')  # видаляємо зайві ../
-            image_url = urljoin(base_url, cleaned_image_url)
 
-            # Формуємо повний URL до детальної сторінки
+            # Очищуємо шлях, видаляючи всі '../' зверху
+            while image_relative_url.startswith('../'):
+                image_relative_url = image_relative_url[3:]
+
+            # Тепер формуємо повний URL картинки
+            image_url = urljoin(base_url, image_relative_url)
+
+            # Формуємо повний URL до детальної сторінки книги
             detail_relative_url = book.h3.a['href']
             detail_url = urljoin(base_url, detail_relative_url)
 
             genre = ''
-            year = None  # На цьому сайті немає року, тому залишаємо None
+            year = None  # На цьому сайті року немає
 
-            # Запитуємо детальну сторінку для отримання жанру
+            # Отримуємо жанр із детальної сторінки (breadcrumb)
             detail_resp = requests.get(detail_url, headers=headers)
             if detail_resp.status_code == 200:
                 detail_soup = BeautifulSoup(detail_resp.text, 'html.parser')
-
-                # Жанр на сайті знаходиться в хлібних крихтах (breadcrumb) під 3-м <li> (індекс 2)
                 breadcrumb_items = detail_soup.select('ul.breadcrumb li a')
                 if len(breadcrumb_items) >= 3:
                     genre = breadcrumb_items[2].text.strip()
             else:
                 self.stdout.write(self.style.WARNING(f"Не вдалося завантажити деталі для книги: {title}"))
 
-            # Записуємо книгу в базу (оновлюємо або створюємо)
+            # Оновлюємо або створюємо книгу в базі
             book_obj, created = Book.objects.update_or_create(
                 title=title,
                 defaults={
