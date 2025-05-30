@@ -267,3 +267,4 @@ if (openPopUp && closePopUp && popUp) {
     popUp.classList.remove('openwin');
   });
 }
+
