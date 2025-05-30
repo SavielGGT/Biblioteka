@@ -107,7 +107,7 @@ DEFAULT_FROM_EMAIL = 'noreply@biblioteka.local'
 
 CORS_ALLOW_ALL_ORIGINS = True
 # Або конкретні дозволені:
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["https://localhost:3000"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 

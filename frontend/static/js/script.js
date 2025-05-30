@@ -72,7 +72,9 @@ async function register(e) {
   e.preventDefault();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value.trim();
-  const password2 = document.getElementById("reg-password2") ? document.getElementById("reg-password2").value.trim() : password;
+
+  const password2 = document.getElementById("reg-password2").value.trim();
+
   const firstName = document.getElementById("reg-firstname").value.trim();
   const lastName = document.getElementById("reg-lastname").value.trim();
 

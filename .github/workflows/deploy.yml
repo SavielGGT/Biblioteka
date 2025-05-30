@@ -3,7 +3,7 @@ name: Deploy to Ubuntu Server
 on:
   push:
     branches:
-      - main  # або заміни на свою гілку
+      - main
 
 jobs:
   deploy:
@@ -22,12 +22,16 @@ jobs:
 
       - name: Upload files to server
         run: |
-          rsync -avz --exclude=".git" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/my-app/
+          rsync -avz --exclude=".git" --exclude=".env" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/my-app/
 
-      - name: (Optional) Restart app on server
+      - name: Upload .env from GitHub Secrets
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo '${{ secrets.ENV_FILE }}' > /home/${{ secrets.SSH_USER }}/my-app/.env"
+
+      - name: Run deploy script
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd /home/ubuntu/my-app/
-            # Наприклад: npm install && pm2 restart app
-            echo "Деплой завершено"
+            chmod +x deploy.sh
+            ./deploy.sh
           EOF
