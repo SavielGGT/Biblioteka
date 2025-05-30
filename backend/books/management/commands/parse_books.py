@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
-    help = 'Парсинг назв, зображень, жанру та ціни книг з books.toscrape.com'
+    help = 'Парсинг книг з books.toscrape.com (назва, жанр, ціна, локальне зображення)'
 
     def handle(self, *args, **kwargs):
         base_url = "https://books.toscrape.com/"
@@ -33,12 +33,20 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
 
-            # URL зображення
+            # Витягуємо шлях до зображення (відносний, типу '../../media/cache/...')
             img_tag = book.select_one('img')
-            image_relative_url = img_tag['src']
-            image_url = urljoin(base_url, image_relative_url)
+            raw_img_url = img_tag['src']  # приклад: '../../media/cache/xx/xx/image.jpg'
 
-            # URL детальної сторінки
+            # Очистимо шлях: заберемо '../' на початку, отримаємо 'media/cache/...'
+            if raw_img_url.startswith('../../'):
+                local_img_path = raw_img_url.replace('../../', '', 1)
+            else:
+                local_img_path = raw_img_url.lstrip('/')
+
+            # Повна URL-адреса на сайті (не зберігаємо, але можемо використовувати при потребі)
+            # full_image_url = urljoin(base_url, raw_img_url)
+
+            # Посилання на сторінку книги
             detail_relative_url = book.h3.a['href']
             detail_url = urljoin(base_url, detail_relative_url)
 
@@ -46,12 +54,12 @@ class Command(BaseCommand):
             genre = ''
             price = None
 
-            # Парсимо детальну сторінку
+            # Деталі з внутрішньої сторінки
             detail_resp = requests.get(detail_url, headers=headers)
             if detail_resp.status_code == 200:
                 detail_soup = BeautifulSoup(detail_resp.text, 'html.parser')
 
-                # Жанр: breadcrumb -> 3-й <li> (індекс 2)
+                # Жанр
                 breadcrumb_items = detail_soup.select('ul.breadcrumb li a')
                 if len(breadcrumb_items) >= 3:
                     genre = breadcrumb_items[2].text.strip()
@@ -64,10 +72,8 @@ class Command(BaseCommand):
                         price = float(price_text.replace('£', ''))
                     except ValueError:
                         price = None
-            else:
-                self.stdout.write(self.style.WARNING(f"❌ Не вдалося завантажити деталі: {title}"))
 
-            # Збереження в БД
+            # Збереження
             book_obj, created = Book.objects.update_or_create(
                 title=title,
                 defaults={
@@ -77,11 +83,11 @@ class Command(BaseCommand):
                     'price': price,
                     'rating': None,
                     'description': '',
-                    'image_url': image_url,
+                    'image_url': local_img_path,  # ✅ тільки відносний шлях
                 }
             )
 
             if created:
-                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title} (Ціна: {price}, Жанр: {genre})"))
+                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title}"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title} (Ціна: {price}, Жанр: {genre})"))
+                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title}"))
