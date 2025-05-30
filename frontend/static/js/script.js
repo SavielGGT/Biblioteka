@@ -44,6 +44,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
+if (document.getElementById("reset-confirm-form")) {
+  document.getElementById("reset-confirm-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const token = new URLSearchParams(window.location.search).get("token");
+    const uid = new URLSearchParams(window.location.search).get("uid");
+    const password = document.getElementById("new-password").value.trim();
+    const password2 = document.getElementById("new-password2").value.trim();
+    const resultDiv = document.getElementById("resetResult");
+
+    if (!uid || !token) {
+      resultDiv.innerText = "Відсутні параметри в URL";
+      resultDiv.style.color = "red";
+      return;
+    }
+
+    if (password.length < 6) {
+      resultDiv.innerText = "Пароль має містити щонайменше 6 символів";
+      resultDiv.style.color = "red";
+      return;
+    }
+
+    if (password !== password2) {
+      resultDiv.innerText = "Паролі не співпадають";
+      resultDiv.style.color = "red";
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/password-reset-confirm/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: uid,
+          token: token,
+          new_password: password,
+          re_new_password: password2
+        }),
+      });
+
+      if (res.ok) {
+        resultDiv.innerText = "Пароль успішно змінено!";
+        resultDiv.style.color = "green";
+      } else {
+        const data = await res.json();
+        resultDiv.innerText = "Помилка: " + (data.detail || "Невірний токен або uid.");
+        resultDiv.style.color = "red";
+      }
+    } catch (error) {
+      resultDiv.innerText = "Помилка з'єднання з сервером.";
+      resultDiv.style.color = "red";
+    }
+  });
+}
+
+
 // --- Логін ---
 async function login(e) {
   e.preventDefault();

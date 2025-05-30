@@ -604,5 +604,178 @@ body.book-details-page {
 
 /* style-для сторінки скидання паролю- */
 
+/* ===== Скидання пароля (reset.html) ===== */
 
+body.reset-body {
+  background-image: url(mainecraft.jpg); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: 'Unbounded', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.reset-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.reset-container h2 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+#reset-confirm-form .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+#reset-confirm-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+#reset-confirm-form input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+#reset-confirm-form button[type="submit"] {
+  width: 100%;
+  background-color: #7C6363;
+  color: white;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  font-family: 'Unbounded', sans-serif;
+}
+
+#reset-confirm-form button[type="submit"]:hover {
+  background-color: #5a4a4a;
+}
+
+#resetResult {
+  margin-top: 15px;
+  font-size: 16px;
+  color: green; /* або червоний залежно від JS */
+}
+
+.back-to-login {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.back-to-login a {
+  color: #7C6363;
+  text-decoration: none;
+}
+
+.back-to-login a:hover {
+  text-decoration: underline;
+}
+
+body.recovery-body {
+  background-image: url(books.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Unbounded', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 400px;
+  margin: 100px auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.container h2 {
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  background-color: #7C6363;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: Unbounded;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #5a4a4a;
+}
+
+#recoveryResult {
+  margin-top: 15px;
+  color: green;
+  font-weight: 500;
+}
+
+.back-to-login {
+  margin-top: 20px;
+}
+
+.back-to-login a {
+  color: #574646;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.back-to-login a:hover {
+  text-decoration: underline;
+}
