@@ -237,7 +237,7 @@ async function loadBooks() {
                 <h3>${book.title}</h3>
               </a>
               <p><b>Жанр:</b> ${book.genre}</p>
-              <p><b>Рейтинг:</b> ${book.rating}</p>
+              <p><b>Рейтинг:</b> ${book.rating}★</p>
             </div>
           `;
         }).join("")
