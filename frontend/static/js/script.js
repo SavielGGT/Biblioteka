@@ -166,12 +166,13 @@ async function loadBookDetail() {
   try {
     const res = await fetch(`${API}/books/${id}/`);
     if (!res.ok) throw new Error("Книга не знайдена");
+
     const book = await res.json();
 
     const bookDetail = document.getElementById("book-detail");
 
     const imageUrl = book.cover || book.image_url || "https://via.placeholder.com/300x450";
-    const rating = book.rating || "Невідомо";
+    const rating = book.rating !== null && book.rating !== undefined ? book.rating : "Невідомо";
     const genre = book.genre || "Невідомо";
     const description = book.description || "Опис відсутній";
 
@@ -190,6 +191,7 @@ async function loadBookDetail() {
     alert(err.message);
   }
 }
+
 
 // --- Фільтри ---
 function setupFilters() {
