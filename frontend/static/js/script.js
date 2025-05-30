@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (adminButton && userRole === "admin") {
     adminButton.style.display = "inline-block";
     adminButton.addEventListener("click", () => {
-      window.location.href = "/admin"; // або свій шлях до адмінки
+      window.location.href = "pages/admin_panel.html";
     });
   }
 });
