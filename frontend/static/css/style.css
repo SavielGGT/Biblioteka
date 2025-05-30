@@ -72,85 +72,234 @@ main{
   height: 600px;
 }
 
-.books_grid{
-   background-image: url(zelya.png);
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  display: flex;
+  gap: 10px;
 }
+
+.auth-buttons button {
+  padding: 5px 15px;
+  font-size: 14px;
+  background-color: #7C6363;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-buttons button:hover {
+  background-color: #554444;
+}
+
 
 /* ---------------------- */
 
 
 /* - style для login.html - */
 
-h2{
-  font-size: 50px;
-  text-align: center;
-  margin-top: 43px;
-  color: white;
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #222; /* запасний фон, якщо зображення не завантажиться */
 }
 
-.login_text{
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  background-color: #614e4e;
-}
-
-.form_login{
+/* Фон з книгою та центрування */
+.form_login {
   background-image: url(books.jpg);
   height: 720px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* вертикально */
+  justify-content: center; /* по вертикалі по центру */
+  align-items: center; /* по горизонталі по центру */
+  gap: 20px; /* відстань між елементами */
+  padding: 20px;
 }
 
-#login-form{
+/* Заголовок */
+h2 {
+  font-size: 50px;
+  color: white;
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(0,0,0,0.7);
+}
+
+/* Форма входу */
+#login-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 25px;
-  margin-top: 185px;
+  gap: 15px;
+  width: 350px;
 }
 
-.form_login input, .form_login button{
-  padding: 5px 10px;
+/* Поля інпут та кнопка форми */
+#login-form input, #login-form button {
+  padding: 12px 15px;
   font-size: 20px;
   border-radius: 10px;
   border: none;
   box-shadow: 0 0 10px rgba(0,0,0,0.8);
-  
+  font-family: 'Unbounded', sans-serif;
 }
 
-#login-form>button{
+/* Кнопка Увійти */
+#login-form > button {
   background-color: #7C6363;
   color: white;
-  font-family: Unbounded;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.form_wrapper{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-  max-width: 400px;
+#login-form > button:hover {
+  background-color: #5a4a4a;
 }
 
-
-.contacts_login{
-  text-align: center;
+/* Кнопка Реєстрація під формою */
+#open_pop_up {
+  margin-top: 10px;
+  padding: 12px 25px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: #7C6363;
   color: white;
-  font-weight: auto;
-  margin-top: auto;
-  padding: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
+  font-family: 'Unbounded', sans-serif;
+  transition: background-color 0.3s ease;
+  text-align: center;
 }
 
-.contacts_login>p{
-  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+#open_pop_up:hover {
+  background-color: #5a4a4a;
 }
+
+/* Стилі для поп-ап вікна */
+.pop_up {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  z-index: 1000;
+  transform: translateY(-44.5%) scale(0);
+  transition: 0.4s ease-in-out;
+}
+
+.pop_up.openwin {
+  transform: translateY(0%) scale(1);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Контейнер поп-ап */
+.pop_up_container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Тіло поп-апа */
+.pop_up_body {
+  margin: auto;
+  width: 500px;
+  background-color: #E8B36D;
+  border-radius: 10px;
+  text-align: center;
+  padding: 30px 15px 40px 15px;  /* замість 180px і 118px */
+  position: relative;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  max-height: 90vh;          /* обмежує висоту */
+  overflow-y: auto;          /* додає скрол, якщо вміст більший за висоту */
+}
+
+
+/* Текст поп-апа (якщо є) */
+.pop_up_body p {
+  margin-top: -155px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 40px;
+}
+
+/* Інпути у поп-ап */
+.pop_up_body input {
+  display: block;
+  margin: 10px auto 0 auto;
+  width: 338px;
+  padding: 17px 20px;
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  font-size: 18px;
+  color: black;
+  font-family: 'Unbounded', sans-serif;
+}
+
+.pop_up_body input:focus {
+  outline: none;
+  box-shadow: 0 0 10px #7C6363;
+}
+
+/* Лейбли інпутів */
+.input_label {
+  display: block;
+  width: 338px;
+  margin: 10px auto 5px auto;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Unbounded', sans-serif;
+}
+
+/* Кнопка реєстрації у поп-ап */
+.pop_up_body button {
+  cursor: pointer;
+  display: block;
+  width: 330px;
+  margin: 60px auto 0 auto;
+  padding: 20px 0;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  background-color: #7C6363;
+  transition: background-color 0.3s ease;
+}
+
+.pop_up_body button:hover {
+  background-color: #5a4a4a;
+}
+
+/* Кнопка закриття поп-ап */
+.pop_up_close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+
+
+
+
 
 /* -------------------------*/
 
@@ -247,7 +396,8 @@ body.profile_body {
 }
 
 .profile_container {
-  max-width: 500px;
+  position: relative; 
+    max-width: 500px;
   margin: 80px auto;
   background-color: rgba(238, 238, 238, 0.519); 
   padding: 30px;
@@ -289,6 +439,7 @@ body.profile_body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-family: Unbounded;
 }
 
 #password-form button:hover {
@@ -301,14 +452,59 @@ body.profile_body {
 }
 
 
-
-.profile_container>h3{
+.profile_container > h3 {
   color: black;
 }
 
-.profile_container>h2{
+.profile_container > h2 {
   color: rgb(0, 0, 0);
 }
+
+
+.profile-buttons {
+  display: flex;
+  justify-content: center;  
+  padding: 20px 0 0 0;
+}
+
+.profile-buttons button {
+  padding: 10px 30px;
+  font-size: 16px;
+  background-color: #574646;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: Unbounded;
+  transition: background-color 0.3s ease;
+  width: 150px;
+}
+
+.profile-buttons button:hover {
+  background-color: #302828;
+}
+
+
+.home-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #574646;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: Unbounded;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #302828;
+}
+
+
 
 /* ---------------------------- */
 
@@ -374,5 +570,8 @@ body.book-details-page {
   font-weight: bold;
   color: #444;
 }
+
+/* style-для сторінки скидання паролю- */
+
 
 

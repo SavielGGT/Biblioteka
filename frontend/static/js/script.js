@@ -1,206 +1,227 @@
-// === Налаштування ===
-const API_URL = 'http://localhost:8000/api';
+const API = "http://localhost:8000/api";
 
-// === Токени ===
-function saveTokens(access, refresh) {
-  localStorage.setItem('access', access);
-  localStorage.setItem('refresh', refresh);
-}
-
-function clearTokens() {
-  localStorage.clear();
-  window.location.href = '/pages/login.html';
-}
-
-async function refreshToken() {
-  const refresh = localStorage.getItem('refresh');
-  if (!refresh) return clearTokens();
-
-  const res = await fetch(`${API_URL}/users/token/refresh/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refresh }),
-  });
-
-  if (res.ok) {
-    const data = await res.json();
-    localStorage.setItem('access', data.access);
-    return data.access;
-  } else {
-    clearTokens();
-  }
-}
-
-// === Запити з авторизацією ===
-async function fetchWithAuth(url, options = {}) {
-  let access = localStorage.getItem('access');
-  let res = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${access}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (res.status === 401) {
-    access = await refreshToken();
-    if (!access) return;
-    res = await fetch(url, {
-      ...options,
-      headers: {
-        ...options.headers,
-        Authorization: `Bearer ${access}`,
-        'Content-Type': 'application/json',
-      },
-    });
+// --- DOMContentLoaded ---
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("login-form")) {
+    document.getElementById("login-form").addEventListener("submit", login);
   }
 
-  return res;
-}
-
-// === Авторизація перед завантаженням сторінок ===
-function requireAuth() {
-  const access = localStorage.getItem('access');
-  if (!access) {
-    window.location.href = '/pages/login.html';
-  }
-}
-
-// === Логін ===
-async function loginUser(email, password) {
-  const res = await fetch(`${API_URL}/users/token/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (res.ok) {
-    const data = await res.json();
-    saveTokens(data.access, data.refresh);
-    window.location.href = '/pages/index.html';
-  } else {
-    alert('Невірні дані для входу');
-  }
-}
-
-// === Отримання книг ===
-async function fetchBooks() {
-  const res = await fetchWithAuth(`${API_URL}/books/`);
-  if (res && res.ok) {
-    const books = await res.json();
-    renderBooks(books);
-  }
-}
-
-function renderBooks(books) {
-  const container = document.getElementById('book-list');
-  container.innerHTML = '';
-  books.forEach(book => {
-    const div = document.createElement('div');
-    div.className = 'book';
-    div.innerHTML = `
-      <h3>${book.title}</h3>
-      <p>${book.author}</p>
-      <a href="/pages/book_detail.html?id=${book.id}">Деталі</a>
-    `;
-    container.appendChild(div);
-  });
-}
-
-// === Деталі книги ===
-async function fetchBookDetail() {
-  const params = new URLSearchParams(window.location.search);
-  const bookId = params.get('id');
-  const res = await fetchWithAuth(`${API_URL}/books/${bookId}/`);
-  if (res && res.ok) {
-    const book = await res.json();
-    document.getElementById('title').textContent = book.title;
-    document.getElementById('author').textContent = book.author;
-    document.getElementById('description').textContent = book.description || '—';
-  }
-}
-
-// === Профіль ===
-async function fetchProfile() {
-  const res = await fetchWithAuth(`${API_URL}/users/profile/`);
-  if (res && res.ok) {
-    const user = await res.json();
-    document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-name').textContent = user.name || '—';
-    document.getElementById('user-role').textContent = user.is_staff ? 'Адміністратор' : 'Користувач';
-    sessionStorage.setItem('user_role', user.is_staff ? 'admin' : 'user');
-    toggleAdminElements();
-  } else {
-    clearTokens();
-  }
-}
-
-// === Адмін-панель ===
-async function fetchAdminData() {
-  const role = sessionStorage.getItem('user_role');
-  if (role !== 'admin') {
-    alert('Доступ лише для адміністратора');
-    return (window.location.href = '/pages/index.html');
+  if (document.getElementById("register-form")) {
+    document.getElementById("register-form").addEventListener("submit", register);
   }
 
-  const res = await fetchWithAuth(`${API_URL}/users/`);
-  if (res && res.ok) {
-    const users = await res.json();
-    renderAdminUsers(users);
-  }
-}
-
-function renderAdminUsers(users) {
-  const list = document.getElementById('user-list');
-  list.innerHTML = '';
-  users.forEach(u => {
-    const li = document.createElement('li');
-    li.textContent = `${u.name} — ${u.email}`;
-    list.appendChild(li);
-  });
-}
-
-// === Показати елементи для адміна ===
-function toggleAdminElements() {
-  const isAdmin = sessionStorage.getItem('user_role') === 'admin';
-  document.querySelectorAll('.admin-only').forEach(el => {
-    el.style.display = isAdmin ? 'block' : 'none';
-  });
-}
-
-// === DOMContentLoaded ===
-document.addEventListener('DOMContentLoaded', async () => {
-  const path = window.location.pathname;
-
-  if (path.includes('login.html')) {
-    const form = document.getElementById('login-form');
-    form?.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      loginUser(email, password);
-    });
+  if (document.getElementById("book-list")) {
+    setupFilters();
+    loadBooks();
   }
 
-  if (path.includes('index.html')) {
-    requireAuth();
-    await fetchBooks();
+  if (document.getElementById("profile-data")) {
+    loadProfile();
   }
 
-  if (path.includes('book_detail.html')) {
-    requireAuth();
-    await fetchBookDetail();
+  if (document.getElementById("book-detail")) {
+    loadBookDetail();
   }
 
-  if (path.includes('profile.html')) {
-    requireAuth();
-    await fetchProfile();
-  }
-
-  if (path.includes('admin_panel.html')) {
-    requireAuth();
-    await fetchProfile(); // щоб дізнатись роль
-    await fetchAdminData();
+  if (document.getElementById("logout-button")) {
+    document.getElementById("logout-button").addEventListener("click", logout);
   }
 });
+
+// --- Логін ---
+async function login(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  try {
+    const res = await fetch(`${API}/token/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+
+    if (res.ok && data.access) {
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
+      window.location.href = "index.html";
+    } else {
+      alert(data.detail || "Помилка входу");
+    }
+  } catch (err) {
+    alert("Помилка мережі");
+  }
+}
+
+// --- Реєстрація з автологіном ---
+async function register(e) {
+  e.preventDefault();
+  const email = document.getElementById("reg-email").value.trim();
+  const password = document.getElementById("reg-password").value.trim();
+  const firstName = document.getElementById("reg-firstname").value.trim();
+  const lastName = document.getElementById("reg-lastname").value.trim();
+
+  try {
+    const res = await fetch(`${API}/register/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, password2, first_name: firstName, last_name: lastName }),
+    });
+    const data = await res.json();
+
+    if (res.ok && data.access) {
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
+      alert("Реєстрація пройшла успішно!");
+      window.location.href = "index.html";
+    } else {
+      alert(JSON.stringify(data));
+    }
+  } catch (err) {
+    alert("Помилка мережі");
+  }
+}
+
+// --- Вихід ---
+function logout() {
+  localStorage.removeItem("access");
+  localStorage.removeItem("refresh");
+  window.location.href = "login.html";
+}
+
+// --- Завантаження профілю ---
+async function loadProfile() {
+  try {
+    const res = await fetch(`${API}/profile/`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+    });
+
+    if (!res.ok) {
+      throw new Error("Не вдалось отримати профіль");
+    }
+
+    const profile = await res.json();
+    document.getElementById("profile-data").innerText = `Email: ${profile.email}\nІм'я: ${profile.first_name}\nПрізвище: ${profile.last_name}`;
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+// --- Завантаження деталей книги ---
+async function loadBookDetail() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  try {
+    const res = await fetch(`${API}/books/${id}/`);
+    if (!res.ok) throw new Error("Книга не знайдена");
+    const book = await res.json();
+
+    document.getElementById("book-detail").innerHTML = `
+      <h2>${book.title}</h2>
+      <p>${book.description}</p>
+      <p><b>Жанр:</b> ${book.genre}</p>
+      <p><b>Рік:</b> ${book.year}</p>
+    `;
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+// --- Завантаження книг з фільтрами ---
+function setupFilters() {
+  const searchInput = document.getElementById("search");
+  const genreSelect = document.getElementById("genre");
+  const yearSelect = document.getElementById("year");
+
+  if (!searchInput || !genreSelect || !yearSelect) return;
+
+  [searchInput, genreSelect, yearSelect].forEach(el => {
+    el.addEventListener("input", () => loadBooks());
+  });
+}
+
+async function loadBooks() {
+  const search = document.getElementById("search")?.value.trim() || "";
+  const genre = document.getElementById("genre")?.value || "";
+  const year = document.getElementById("year")?.value || "";
+
+  let query = [];
+  if (search) query.push(`search=${encodeURIComponent(search)}`);
+  if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
+  if (year) query.push(`year=${encodeURIComponent(year)}`);
+
+  const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Не вдалось завантажити книги");
+    const books = await res.json();
+
+    const list = document.getElementById("book-list");
+    if (!list) return;
+
+    list.innerHTML = books.length
+      ? books.map(book => `
+        <div class="book-card">
+          <a href="book_detail.html?id=${book.id}">
+            <img src="${book.cover || "https://via.placeholder.com/100x150"}" alt="Обкладинка ${book.title}">
+            <h3>${book.title}</h3>
+          </a>
+          <p><b>Жанр:</b> ${book.genre}</p>
+          <p><b>Рік:</b> ${book.year}</p>
+        </div>
+      `).join("")
+      : "<p>Книги не знайдено</p>";
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+// --- Скидання пароля (приклад) ---
+async function sendPasswordReset(email) {
+  const res = await fetch(`${API}/password-reset/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  if (res.ok) {
+    alert("Лист для скидання пароля надіслано!");
+  } else {
+    alert("Помилка при відправці листа");
+  }
+}
+
+async function confirmPasswordReset(token, newPassword) {
+  const res = await fetch(`${API}/password-reset/confirm/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+
+  if (res.ok) {
+    alert("Пароль успішно змінено!");
+    window.location.href = "login.html";
+  } else {
+    alert("Помилка при зміні пароля");
+  }
+}
+
+// --- Попап відкриття/закриття ---
+const openPopUp = document.getElementById('open_pop_up');
+const closePopUp = document.getElementById('pop_up_close');
+const popUp = document.getElementById('pop_up');
+
+if(openPopUp && closePopUp && popUp) {
+  openPopUp.addEventListener('click', function(e){
+      e.preventDefault();
+      popUp.classList.add('openwin');
+  });
+
+  closePopUp.addEventListener('click', () => {
+      popUp.classList.remove('openwin');
+  });
+}
+

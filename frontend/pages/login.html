@@ -1,30 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
-  <title>Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600..900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вхід</title>
   <link rel="stylesheet" href="../static/css/style.css" />
 </head>
-<body>
-  <div class="login_text">
-    <h2>Вхід до системи</h2>
+<body class="form_login">
+
+  <h2>Увійти</h2>
+
+  <form id="login-form">
+    <input id="email" type="email" placeholder="Email" required />
+    <input id="password" type="password" placeholder="Пароль" required />
+    <button type="submit">Увійти</button>
+  </form>
+
+  <div style="text-align: center; margin-top: 15px;">
+    <button id="open_pop_up">Реєстрація</button>
   </div>
-    <div class="form_login">
-      <div class="form_wrapper">
-      <form id="login-form">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Пароль" required />
-      <button type="submit">Увійти</button>
-      <p id="login-error" class="error-message"></p>
-    </form>
-    
-        <div class="contacts_login">
-          <p>Контакти:</p>
-          <p>email: NkbSupport@gmail.com</p>
-        </div>
+
+  <!-- Попап реєстрації без змін -->
+  <div id="pop_up" class="pop_up">
+    <div class="pop_up_container">
+      <div id="pop_up_body" class="pop_up_body">
+        <span id="pop_up_close" class="pop_up_close">&times;</span>
+        <form id="register-form">
+          <label for="reg-email" class="input_label">Email</label>
+          <input id="reg-email" type="email" required />
+
+          <label for="reg-firstname" class="input_label">Ім'я</label>
+          <input id="reg-firstname" type="text" required />
+
+          <label for="reg-lastname" class="input_label">Прізвище</label>
+          <input id="reg-lastname" type="text" required />
+
+          <label for="reg-password" class="input_label">Пароль</label>
+          <input id="reg-password" type="password" required />
+
+          <label for="reg-password2" class="input_label">Повторити пароль</label>
+          <input id="reg-password2" type="password" required />
+
+          <button type="submit">Зареєструватися</button>
+        </form>
       </div>
     </div>
+  </div>
+
   <script src="../static/js/script.js"></script>
 </body>
+
 </html>
