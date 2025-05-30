@@ -101,12 +101,11 @@ main{
 
 /* - style для login.html - */
 
-/* Загальні стилі сторінки */
+
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Unbounded', sans-serif;
   background-color: #222; /* запасний фон, якщо зображення не завантажиться */
 }
 
@@ -217,10 +216,13 @@ h2 {
   background-color: #E8B36D;
   border-radius: 10px;
   text-align: center;
-  padding: 180px 15px 118px 15px;
+  padding: 30px 15px 40px 15px;  /* замість 180px і 118px */
   position: relative;
   box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  max-height: 90vh;          /* обмежує висоту */
+  overflow-y: auto;          /* додає скрол, якщо вміст більший за висоту */
 }
+
 
 /* Текст поп-апа (якщо є) */
 .pop_up_body p {
