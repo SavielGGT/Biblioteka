@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (adminButton && userRole === "admin") {
     adminButton.style.display = "inline-block";
     adminButton.addEventListener("click", () => {
-      window.location.href = "/admin"; // або свій шлях до адмінки
+      window.location.href = "pages/admin_panel.html";
     });
   }
 });
@@ -160,7 +160,7 @@ async function loadBookDetail() {
       <h2>${book.title}</h2>
       <p>${book.description}</p>
       <p><b>Жанр:</b> ${book.genre}</p>
-      <p><b>Рік:</b> ${book.year}</p>
+      <p><b>Ціна:</b> ${book.price}</p>
     `;
   } catch (err) {
     alert(err.message);
@@ -171,9 +171,10 @@ async function loadBookDetail() {
 function setupFilters() {
   const searchInput = document.getElementById("search");
   const genreSelect = document.getElementById("genre");
-  const yearSelect = document.getElementById("year");
+  const priceSelect = document.getElementById("price");
 
-  if (!searchInput || !genreSelect || !yearSelect) return;
+
+  if (!searchInput || !genreSelect || !priceSelectSelect) return;
 
   [searchInput, genreSelect, yearSelect].forEach(el => {
     el.addEventListener("input", () => loadBooks());
@@ -183,12 +184,12 @@ function setupFilters() {
 async function loadBooks() {
   const search = document.getElementById("search")?.value.trim() || "";
   const genre = document.getElementById("genre")?.value || "";
-  const year = document.getElementById("year")?.value || "";
+  const year = document.getElementById("price")?.value || "";
 
   let query = [];
   if (search) query.push(`search=${encodeURIComponent(search)}`);
   if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
-  if (year) query.push(`year=${encodeURIComponent(year)}`);
+  if (year) query.push(`price=${encodeURIComponent(year)}`);
 
   const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
 
@@ -209,7 +210,7 @@ async function loadBooks() {
             <h3>${book.title}</h3>
           </a>
           <p><b>Жанр:</b> ${book.genre}</p>
-          <p><b>Рік:</b> ${book.year}</p>
+          <p><b>Ціна:</b> $${book.price}</p>
         </div>
       `).join("")
       : "<p>Книги не знайдено</p>";
