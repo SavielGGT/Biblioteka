@@ -72,9 +72,7 @@ async function register(e) {
   e.preventDefault();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value.trim();
-
   const password2 = document.getElementById("reg-password2").value.trim();
-
   const firstName = document.getElementById("reg-firstname").value.trim();
   const lastName = document.getElementById("reg-lastname").value.trim();
 
@@ -82,7 +80,13 @@ async function register(e) {
     const res = await fetch(`${API}/register/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, password2, first_name: firstName, last_name: lastName }),
+      body: JSON.stringify({
+        email,
+        password,
+        password2,
+        first_name: firstName,
+        last_name: lastName,
+      }),
     });
     const data = await res.json();
 
@@ -122,7 +126,9 @@ async function loadProfile() {
     }
 
     const profile = await res.json();
-    document.getElementById("profile-data").innerText = `Email: ${profile.email}\nІм'я: ${profile.first_name}\nПрізвище: ${profile.last_name}`;
+    const role = profile.is_staff ? "Адмін" : "Користувач";
+    document.getElementById("profile-data").innerText =
+      `Email: ${profile.email}\nІм'я: ${profile.first_name}\nПрізвище: ${profile.last_name}\nРоль: ${role}`;
   } catch (err) {
     alert(err.message);
   }
@@ -137,9 +143,8 @@ async function loadUserRole() {
     if (!res.ok) throw new Error("Не вдалось отримати профіль");
     const profile = await res.json();
 
-    const role = profile.role || (profile.is_admin ? "admin" : "user");
+    const role = profile.is_staff ? "admin" : "user";
     localStorage.setItem("userRole", role);
-
   } catch (err) {
     console.error(err);
     localStorage.setItem("userRole", "user");
@@ -160,7 +165,7 @@ async function loadBookDetail() {
       <h2>${book.title}</h2>
       <p>${book.description}</p>
       <p><b>Жанр:</b> ${book.genre}</p>
-      <p><b>Ціна:</b> ${book.price}</p>
+      <p><b>Ціна:</b> $${book.price}</p>
     `;
   } catch (err) {
     alert(err.message);
@@ -173,10 +178,9 @@ function setupFilters() {
   const genreSelect = document.getElementById("genre");
   const priceSelect = document.getElementById("price");
 
+  if (!searchInput || !genreSelect || !priceSelect) return;
 
-  if (!searchInput || !genreSelect || !priceSelectSelect) return;
-
-  [searchInput, genreSelect, yearSelect].forEach(el => {
+  [searchInput, genreSelect, priceSelect].forEach(el => {
     el.addEventListener("input", () => loadBooks());
   });
 }
@@ -184,15 +188,14 @@ function setupFilters() {
 async function loadBooks() {
   const search = document.getElementById("search")?.value.trim() || "";
   const genre = document.getElementById("genre")?.value || "";
-  const year = document.getElementById("price")?.value || "";
+  const price = document.getElementById("price")?.value || "";
 
   let query = [];
   if (search) query.push(`search=${encodeURIComponent(search)}`);
   if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
-  if (year) query.push(`price=${encodeURIComponent(year)}`);
+  if (price) query.push(`price=${encodeURIComponent(price)}`);
 
   const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
-
 
   try {
     const res = await fetch(url);
@@ -219,7 +222,7 @@ async function loadBooks() {
   }
 }
 
-// --- Скидання пароля (приклад) ---
+// --- Скидання пароля ---
 async function sendPasswordReset(email) {
   const res = await fetch(`${API}/password-reset/`, {
     method: "POST",
@@ -249,18 +252,18 @@ async function confirmPasswordReset(token, newPassword) {
   }
 }
 
-// --- Попап відкриття/закриття ---
+// --- Попап ---
 const openPopUp = document.getElementById('open_pop_up');
 const closePopUp = document.getElementById('pop_up_close');
 const popUp = document.getElementById('pop_up');
 
-if(openPopUp && closePopUp && popUp) {
-  openPopUp.addEventListener('click', function(e){
-      e.preventDefault();
-      popUp.classList.add('openwin');
+if (openPopUp && closePopUp && popUp) {
+  openPopUp.addEventListener('click', function (e) {
+    e.preventDefault();
+    popUp.classList.add('openwin');
   });
 
   closePopUp.addEventListener('click', () => {
-      popUp.classList.remove('openwin');
+    popUp.classList.remove('openwin');
   });
 }
