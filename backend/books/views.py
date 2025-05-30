@@ -12,5 +12,5 @@ class BookViewSet(viewsets.ModelViewSet):
 
     # Фільтрація та пошук
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['genre', 'year']
-    search_fields = ['title', 'author']
+    filterset_fields = ['genre', 'rating']
+    search_fields = ['title']
