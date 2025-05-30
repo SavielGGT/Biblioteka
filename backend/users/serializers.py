@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = ('id', 'email', 'first_name', 'last_name', 'is_staff')  # ← додано is_staff
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
