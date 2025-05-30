@@ -27,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("logout-button").addEventListener("click", logout);
   }
 
+    if (document.getElementById("home-button")) {
+    document.getElementById("home-button").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  }
+
   // --- Показ кнопки адміна ---
   const adminButton = document.getElementById("admin-button");
   const userRole = localStorage.getItem("userRole");
