@@ -113,25 +113,14 @@ main{
   background-color: #554444;
 }
 
-.admin-button-wrapper {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.admin-button {
-  padding: 5px 15px;
-  font-size: 14px;
-  background-color: #7C6363;
-  color: white;
-  border: none;
-  border-radius: 10px;
+#admin-button {
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.admin-button:hover {
-  background-color: #554444;
-}
 
 
 /* ---------------------- */
