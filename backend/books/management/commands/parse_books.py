@@ -35,7 +35,8 @@ class Command(BaseCommand):
 
             # Формуємо повний URL до зображення
             image_relative_url = book.select_one('img')['src']
-            image_url = urljoin(base_url, image_relative_url)
+            cleaned_image_url = image_relative_url.replace('../../', '')  # видаляємо зайві ../
+            image_url = urljoin(base_url, cleaned_image_url)
 
             # Формуємо повний URL до детальної сторінки
             detail_relative_url = book.h3.a['href']
@@ -56,17 +57,19 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(self.style.WARNING(f"Не вдалося завантажити деталі для книги: {title}"))
 
-            # Записуємо книгу в базу (якщо такої ще немає)
-            if not Book.objects.filter(title=title).exists():
-                Book.objects.create(
-                    title=title,
-                    author='',
-                    genre=genre,
-                    year=year,
-                    rating=None,
-                    description='',
-                    image_url=image_url
-                )
+            # Записуємо книгу в базу (оновлюємо або створюємо)
+            book_obj, created = Book.objects.update_or_create(
+                title=title,
+                defaults={
+                    'author': '',
+                    'genre': genre,
+                    'year': year,
+                    'rating': None,
+                    'description': '',
+                    'image_url': image_url,
+                }
+            )
+            if created:
                 self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title} (Жанр: {genre})"))
             else:
-                self.stdout.write(self.style.WARNING(f"⚠️ Вже існує: {title}"))
+                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title} (Жанр: {genre})"))
