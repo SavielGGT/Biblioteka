@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
-    help = 'Парсинг назв, зображень, жанру та ціни книг з головної сторінки books.toscrape.com'
+    help = 'Парсинг назв, зображень, жанру та ціни книг з books.toscrape.com'
 
     def handle(self, *args, **kwargs):
         base_url = "https://books.toscrape.com/"
@@ -33,52 +33,47 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
 
-            # Витягуємо "сирий" шлях до картинки (типу ../../media/cache/...)
-            image_relative_url = book.select_one('img')['src']
-
-            # Правильно очищуємо шлях від ../
-            while image_relative_url.startswith('../'):
-                image_relative_url = image_relative_url[3:]
-
-            # Формуємо повний URL зображення
+            # URL зображення
+            img_tag = book.select_one('img')
+            image_relative_url = img_tag['src']
             image_url = urljoin(base_url, image_relative_url)
 
-            # Формуємо повний URL до детальної сторінки книги
+            # URL детальної сторінки
             detail_relative_url = book.h3.a['href']
             detail_url = urljoin(base_url, detail_relative_url)
 
+            # Ініціалізація
             genre = ''
             price = None
 
-            # Запитуємо детальну сторінку для жанру і ціни
+            # Парсимо детальну сторінку
             detail_resp = requests.get(detail_url, headers=headers)
             if detail_resp.status_code == 200:
                 detail_soup = BeautifulSoup(detail_resp.text, 'html.parser')
 
-                # Жанр у хлібних крихтах: третій <li> з <ul class="breadcrumb">
+                # Жанр: breadcrumb -> 3-й <li> (індекс 2)
                 breadcrumb_items = detail_soup.select('ul.breadcrumb li a')
                 if len(breadcrumb_items) >= 3:
                     genre = breadcrumb_items[2].text.strip()
 
-                # Ціна в <p class="price_color">
+                # Ціна
                 price_tag = detail_soup.select_one('p.price_color')
                 if price_tag:
-                    price_text = price_tag.text.strip()
-                    # Приклад: '£53.74' -> 53.74 float
                     try:
-                        price = float(price_text.lstrip('£'))
+                        price_text = price_tag.text.strip()
+                        price = float(price_text.replace('£', ''))
                     except ValueError:
                         price = None
             else:
-                self.stdout.write(self.style.WARNING(f"Не вдалося завантажити деталі для книги: {title}"))
+                self.stdout.write(self.style.WARNING(f"❌ Не вдалося завантажити деталі: {title}"))
 
-            # Оновлюємо або створюємо запис
+            # Збереження в БД
             book_obj, created = Book.objects.update_or_create(
                 title=title,
                 defaults={
                     'author': '',
                     'genre': genre,
-                    'year': None,  # року немає на сайті
+                    'year': None,
                     'price': price,
                     'rating': None,
                     'description': '',
@@ -87,6 +82,6 @@ class Command(BaseCommand):
             )
 
             if created:
-                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title} (Жанр: {genre}, Ціна: {price})"))
+                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title} (Ціна: {price}, Жанр: {genre})"))
             else:
-                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title} (Жанр: {genre}, Ціна: {price})"))
+                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title} (Ціна: {price}, Жанр: {genre})"))
