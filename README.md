@@ -56,20 +56,6 @@ JWT токени зберігаються у localStorage
 
 Користуватись адмін-панеллю з формами
 
-📁 Структура проєкту
-
-Biblioteka/
-├── backend/        # Django REST API
-│   ├── users/
-│   ├── books/
-│   ├── ...
-├── frontend/       # HTML + JS сайт
-│   ├── pages/      # index.html, login.html, profile.html, ...
-│   └── static/     # css/, js/, images
-├── nginx/          # default.conf
-├── docker-compose.yml
-└── .env
-
 🐳 Docker-сервіси
 
 nginx — обробка frontend та reverse proxy
