@@ -2,13 +2,14 @@ from django.core.management.base import BaseCommand
 import requests
 from bs4 import BeautifulSoup
 from books.models import Book
+from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
-    help = 'Парсинг назв, зображень, жанру та року книг з однієї сторінки'
+    help = 'Парсинг та оновлення назв, зображень, жанру та року книг'
 
     def handle(self, *args, **kwargs):
-        url = "https://books.toscrape.com"
+        base_url = "https://books.toscrape.com/"
         headers = {
             'User-Agent': (
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
@@ -17,14 +18,12 @@ class Command(BaseCommand):
             )
         }
 
-        response = requests.get(url, headers=headers)
-
+        response = requests.get(base_url, headers=headers)
         if response.status_code != 200:
             self.stdout.write(self.style.ERROR(f"Сторінка недоступна: {response.status_code}"))
             return
 
         soup = BeautifulSoup(response.text, 'html.parser')
-
         book_items = soup.select('article.product_pod')
 
         if not book_items:
@@ -33,39 +32,35 @@ class Command(BaseCommand):
 
         for book in book_items:
             title = book.h3.a['title'].strip()
+
             image_relative_url = book.select_one('img')['src']
-            image_url = f"{url}/{image_relative_url.lstrip('../')}"
+            image_url = urljoin(base_url, image_relative_url)
 
-            # Отримуємо посилання на детальну сторінку книги
             detail_relative_url = book.h3.a['href']
-            detail_url = f"{url}/catalogue/{detail_relative_url.lstrip('../')}"
+            detail_url = urljoin(base_url, detail_relative_url)
 
-            # Запит до детальної сторінки
+            genre = ''
+            year = None  # Сайту немає року, можна залишити None або придумати логіку
+
             detail_resp = requests.get(detail_url, headers=headers)
-            if detail_resp.status_code != 200:
-                self.stdout.write(self.style.WARNING(f"Не вдалося завантажити деталі для книги: {title}"))
-                genre = ''
-                year = None
-            else:
+            if detail_resp.status_code == 200:
                 detail_soup = BeautifulSoup(detail_resp.text, 'html.parser')
-
-                # Витягуємо жанр із breadcrumbs (3-й елемент)
-                breadcrumb = detail_soup.select('ul.breadcrumb li a')
-                genre = breadcrumb[2].text.strip() if len(breadcrumb) >= 3 else ''
-
-                # Спроба витягти рік — на цьому сайті немає, ставимо None
-                year = None
-
-            if not Book.objects.filter(title=title).exists():
-                Book.objects.create(
-                    title=title,
-                    author='',
-                    genre=genre,
-                    year=year,
-                    rating=None,
-                    description='',
-                    image_url=image_url
-                )
-                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title}"))
+                breadcrumb_items = detail_soup.select('ul.breadcrumb li a')
+                if len(breadcrumb_items) >= 3:
+                    genre = breadcrumb_items[2].text.strip()
             else:
-                self.stdout.write(self.style.WARNING(f"⚠️ Вже існує: {title}"))
+                self.stdout.write(self.style.WARNING(f"Не вдалося завантажити деталі для книги: {title}"))
+
+            # Оновлення або створення книги
+            obj, created = Book.objects.update_or_create(
+                title=title,
+                defaults={
+                    'image_url': image_url,
+                    'genre': genre,
+                    'year': year,
+                }
+            )
+            if created:
+                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title} (Жанр: {genre})"))
+            else:
+                self.stdout.write(self.style.SUCCESS(f"♻️ Оновлено: {title} (Жанр: {genre})"))
