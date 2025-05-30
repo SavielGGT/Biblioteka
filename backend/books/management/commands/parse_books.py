@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
-    help = 'Парсинг книг з books.toscrape.com: назва, жанр, ціна, локальний шлях до зображення'
+    help = 'Парсинг книг з books.toscrape.com: назва, жанр, ціна, повне посилання на зображення'
 
     def handle(self, *args, **kwargs):
         base_url = "https://books.toscrape.com/"
@@ -33,20 +33,10 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
 
-            # Отримуємо raw шлях до зображення (наприклад: ../../media/cache/xx/xx/image.jpg)
+            # Отримуємо шлях до зображення та формуємо абсолютне посилання
             raw_img_src = book.find('img')['src']  # типу: ../../media/cache/2c/da/img.jpg
+            image_url = urljoin(base_url, raw_img_src)  # ← повне посилання на зображення
 
-            # Очищаємо до формату media/cache/2c/da/img.jpg
-            if raw_img_src.startswith('../../'):
-                image_path = raw_img_src.replace('../../', '')
-            elif raw_img_src.startswith('../'):
-                image_path = raw_img_src.replace('../', '')
-            else:
-                image_path = raw_img_src
-
-            # Тепер image_path — це "media/cache/xx/xx/назва.jpg"
-            # І саме такий шлях потрібен для шаблону <img src="media/cache/...">
-            
             # Посилання на сторінку з деталями
             detail_href = book.h3.a['href']
             detail_url = urljoin(base_url, detail_href)
@@ -81,9 +71,9 @@ class Command(BaseCommand):
                     'price': price,
                     'rating': None,
                     'description': '',
-                    'image_url': image_path  # ← саме тут правильний формат!
+                    'image_url': image_url  # ← абсолютне посилання!
                 }
             )
 
             status = "✅ Додано" if created else "🔄 Оновлено"
-            self.stdout.write(self.style.SUCCESS(f"{status}: {title} — {image_path} — £{price} — {genre}"))
+            self.stdout.write(self.style.SUCCESS(f"{status}: {title} — {image_url} — £{price} — {genre}"))
