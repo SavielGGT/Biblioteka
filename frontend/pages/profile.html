@@ -11,7 +11,21 @@
     <a href="login.html">Вийти</a>
   </div>
 
-  <h1>Профіль користувача</h1>
-  <div id="profile-data"></div>
+  <div class="profile_container">
+  <h2>Профіль користувача</h2>
+
+  <div id="profile_info">
+    <p><strong>Ім'я:</strong> Іван Іванов</p>
+    <p><strong>Email:</strong> ivan@example.com</p>
+  </div>
+
+  <h3>Скидання пароля</h3>
+  <form id="password-form">
+    <input type="password" placeholder="Новий пароль" required />
+    <input type="password" placeholder="Повторіть новий пароль" required />
+    <button type="submit">Скинути пароль</button>
+    <p id="password-message"></p>
+  </form>
+</div>
 </body>
 </html>

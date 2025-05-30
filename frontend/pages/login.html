@@ -15,9 +15,33 @@
       <form id="login-form">
         <input type="email" id="email" placeholder="Email" required />
         <input type="password" id="password" placeholder="Пароль" required />
+        <a href="" id="open_pop_up">Регістрація</a>
         <button type="submit">Увійти</button>
         <p id="login-error" class="error-message"></p>
       </form>
+
+      <div class="pop_up" id="pop_up">
+        <div class="pop_up_container">
+            <div class="pop_up_body" id="pop_up_body">
+            <p>Регістрація</p>
+
+            <form action="">
+              <input type="text" placeholder="Ім'я">
+              <input type="text" placeholder="email">
+              <input type="text" placeholder="Пароль">
+              <input type="text" placeholder="Повторити пароль">
+              <button type="submit">Зареіструватися</button>
+            </form>
+
+            <div class="pop_up_close" id="pop_up_close">&#10006</div>
+            </div>
+        </div>
+    </div>
+
+      <div class="forgot-password">
+     <button type="submit">Забули пароль?</button>
+  </div>
+
 
       <div class="contacts_login">
         <p>Контакти:</p>
@@ -25,8 +49,7 @@
       </div>
     </div>
   </div>
-  <div class="forgot-password">
-     Забули пароль?
-  </div>
+
+    <script src="../static/js/script.js"></script>
 </body>
 </html>

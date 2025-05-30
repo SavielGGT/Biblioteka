@@ -172,6 +172,131 @@ h2{
   text-shadow: 0 0 5px rgba(0,0,0,0.8);
 }
 
+
+.pop_up{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    z-index: 2;
+    transform: translateY(-44.5%) scale(0);
+    transition: .4s ease-in-out;
+}
+
+.pop_up.openwin{
+    transform: translateY(0%) scale(100%);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.pop_up_container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.pop_up_body{
+    margin: auto;
+    width: 500px;
+    background-color: #E8B36D;
+    border-radius: 10px;
+    text-align: center;
+    padding: 180px 15px 118px 15px;
+    position: relative;
+}
+
+.pop_up_body p{
+    margin-top: -155px;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.pop_up_body input{
+    display: block;
+    margin: 10px auto 0px auto;
+    width: 338px;
+    padding: 17px 20px;
+    background-color: white;
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+    font-size: 18px;
+    color: black;
+}
+
+.input_label{
+    display: block;
+    width: 338px;
+    margin: 10px auto 5px auto;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.pop_up_body input:focus{
+    outline: none;
+}
+
+.pop_up_body button{
+    cursor: pointer;
+    display: block;
+    width: 330px;
+    margin: 60px auto 0px auto;
+    padding: 20px 0px;
+    font-family: Unbounded;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    background-color: #7C6363;
+}
+
+.pop_up_close{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 21px;
+    cursor: pointer;
+    color: white;
+}
+
+.form_login a {
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+  font-family: Unbounded;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: 10px;
+  background-color: #7C6363;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.forgot-password button {
+  background-color: #7C6363;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: Unbounded;
+  cursor: pointer;
+}
+
+
+
+
+
 /* -------------------------*/
 
 
@@ -292,6 +417,7 @@ body.profile_body {
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
+  
 }
 
 #password-form input {
@@ -309,6 +435,7 @@ body.profile_body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-family: Unbounded;
 }
 
 #password-form button:hover {
@@ -345,7 +472,6 @@ body.profile_body {
   text-decoration: none;
   border-radius: 10px;
   border: 1px solid transparent;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .profile-buttons a:hover {
