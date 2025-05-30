@@ -277,6 +277,29 @@ async function confirmPasswordReset(token, newPassword) {
   }
 }
 
+document.getElementById("recoveryForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("recoveryEmail").value.trim();
+
+  try {
+    const res = await fetch(`${API}/password-reset/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    const resultDiv = document.getElementById("recoveryResult");
+    if (res.ok) {
+      resultDiv.innerText = "Лист для скидання пароля надіслано!";
+      resultDiv.style.color = "green";
+    } else {
+      resultDiv.innerText = "Помилка при відправці листа";
+      resultDiv.style.color = "red";
+    }
+  } catch (err) {
+    document.getElementById("recoveryResult").innerText = "Помилка мережі";
+  }
+});
 // --- Попап ---
 const openPopUp = document.getElementById("open_pop_up");
 const closePopUp = document.getElementById("pop_up_close");
