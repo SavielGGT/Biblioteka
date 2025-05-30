@@ -26,6 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("logout-button")) {
     document.getElementById("logout-button").addEventListener("click", logout);
   }
+
+  // --- Показ кнопки адміна ---
+  const adminButton = document.getElementById("admin-button");
+  const userRole = localStorage.getItem("userRole");
+  if (adminButton && userRole === "admin") {
+    adminButton.style.display = "inline-block";
+    adminButton.addEventListener("click", () => {
+      window.location.href = "/admin"; // або свій шлях до адмінки
+    });
+  }
 });
 
 // --- Логін ---
@@ -45,6 +55,9 @@ async function login(e) {
     if (res.ok && data.access) {
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
+
+      await loadUserRole();
+
       window.location.href = "index.html";
     } else {
       alert(data.detail || "Помилка входу");
@@ -59,7 +72,9 @@ async function register(e) {
   e.preventDefault();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value.trim();
+
   const password2 = document.getElementById("reg-password2").value.trim();
+
   const firstName = document.getElementById("reg-firstname").value.trim();
   const lastName = document.getElementById("reg-lastname").value.trim();
 
@@ -74,6 +89,9 @@ async function register(e) {
     if (res.ok && data.access) {
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
+
+      await loadUserRole();
+
       alert("Реєстрація пройшла успішно!");
       window.location.href = "index.html";
     } else {
@@ -88,6 +106,7 @@ async function register(e) {
 function logout() {
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
+  localStorage.removeItem("userRole");
   window.location.href = "login.html";
 }
 
@@ -106,6 +125,24 @@ async function loadProfile() {
     document.getElementById("profile-data").innerText = `Email: ${profile.email}\nІм'я: ${profile.first_name}\nПрізвище: ${profile.last_name}`;
   } catch (err) {
     alert(err.message);
+  }
+}
+
+// --- Завантаження ролі користувача ---
+async function loadUserRole() {
+  try {
+    const res = await fetch(`${API}/profile/`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
+    });
+    if (!res.ok) throw new Error("Не вдалось отримати профіль");
+    const profile = await res.json();
+
+    const role = profile.role || (profile.is_admin ? "admin" : "user");
+    localStorage.setItem("userRole", role);
+
+  } catch (err) {
+    console.error(err);
+    localStorage.setItem("userRole", "user");
   }
 }
 
@@ -225,4 +262,3 @@ if(openPopUp && closePopUp && popUp) {
       popUp.classList.remove('openwin');
   });
 }
-
