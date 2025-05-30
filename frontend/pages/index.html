@@ -9,12 +9,14 @@
 <body>
 
 <header>
-  <h1>Моя бібліотека</h1>
+  <h1>НКБ-бібліотека</h1>
   <div class="auth-buttons">
-    <button id="open_pop_up">Реєстрація</button>
+    <a href="profile.html"><button id="profile-button">Профіль</button></a>
     <button id="logout-button">Вийти</button>
+    <button id="admin-button" style="display: none;">Адмін панель</button> <!-- Лише одна! -->
   </div>
 </header>
+
 
 <main>
   <div class="sheard-filter">
@@ -36,28 +38,8 @@
   <div id="book-list" class="books-grid"></div>
 </main>
 
-<!-- Попап реєстрації -->
-<div id="pop_up" class="pop_up">
-  <div class="pop_up_container">
-    <div id="pop_up_body" class="pop_up_body">
-      <span id="pop_up_close" class="pop_up_close">&times;</span>
-      <form id="register-form">
-        <label for="reg-email" class="input_label">Email</label>
-        <input id="reg-email" type="email" required />
-        
-        <label for="reg-firstname" class="input_label">Ім'я</label>
-        <input id="reg-firstname" type="text" required />
-        
-        <label for="reg-lastname" class="input_label">Прізвище</label>
-        <input id="reg-lastname" type="text" required />
-        
-        <label for="reg-password" class="input_label">Пароль</label>
-        <input id="reg-password" type="password" required />
-        
-        <button type="submit">Зареєструватися</button>
-      </form>
-    </div>
-  </div>
+<div class="admin-button-wrapper">
+  <button id="admin-button" class="admin-button" style="display: none;">Адмін панель</button>
 </div>
 
 <script src="../static/js/script.js"></script>
