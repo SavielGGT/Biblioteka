@@ -273,8 +273,36 @@ async function confirmPasswordReset(token, newPassword) {
     alert("Пароль успішно змінено!");
     window.location.href = "login.html";
   } else {
-    alert("Помилка при зміні пароля");
+    const data = await res.json();
+    alert(data.detail || "Помилка при зміні пароля");
   }
+}
+
+if (document.getElementById("reset-confirm-form")) {
+  document.getElementById("reset-confirm-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const token = new URLSearchParams(window.location.search).get("token");
+    const password = document.getElementById("new-password").value.trim();
+    const password2 = document.getElementById("new-password2")?.value.trim();
+
+    if (!token) {
+      alert("Токен відсутній у URL");
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      alert("Пароль має містити щонайменше 6 символів");
+      return;
+    }
+
+    if (password2 && password !== password2) {
+      alert("Паролі не співпадають");
+      return;
+    }
+
+    await confirmPasswordReset(token, password);
+  });
 }
 
 document.getElementById("recoveryForm").addEventListener("submit", async (e) => {
