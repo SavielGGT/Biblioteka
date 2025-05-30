@@ -190,7 +190,8 @@ async function loadBooks() {
   if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
   if (year) query.push(`year=${encodeURIComponent(year)}`);
 
-  const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
+  const url = `${API}/export/${query.length ? "?" + query.join("&") : ""}`;
+
 
   try {
     const res = await fetch(url);
