@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBooks();
   }
 
-  if (document.getElementById("profile-data")) {
-    loadProfile();
-  }
-
   if (document.getElementById("book-detail")) {
     loadBookDetail();
+  }
+
+  if (document.getElementById("profile-data")) {
+    loadProfile();
   }
 
   if (document.getElementById("logout-button")) {
@@ -56,6 +56,7 @@ async function login(e) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
+
     const data = await res.json();
 
     if (res.ok && data.access) {
@@ -94,6 +95,7 @@ async function register(e) {
         last_name: lastName,
       }),
     });
+
     const data = await res.json();
 
     if (res.ok && data.access) {
@@ -127,12 +129,11 @@ async function loadProfile() {
       headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
     });
 
-    if (!res.ok) {
-      throw new Error("Не вдалось отримати профіль");
-    }
+    if (!res.ok) throw new Error("Не вдалось отримати профіль");
 
     const profile = await res.json();
     const role = profile.is_staff ? "Адмін" : "Користувач";
+
     document.getElementById("profile-data").innerText =
       `Email: ${profile.email}\nІм'я: ${profile.first_name}\nПрізвище: ${profile.last_name}\nРоль: ${role}`;
   } catch (err) {
@@ -140,15 +141,15 @@ async function loadProfile() {
   }
 }
 
-// --- Завантаження ролі користувача ---
+// --- Завантаження ролі ---
 async function loadUserRole() {
   try {
     const res = await fetch(`${API}/profile/`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
     });
     if (!res.ok) throw new Error("Не вдалось отримати профіль");
-    const profile = await res.json();
 
+    const profile = await res.json();
     const role = profile.is_staff ? "admin" : "user";
     localStorage.setItem("userRole", role);
   } catch (err) {
@@ -167,18 +168,30 @@ async function loadBookDetail() {
     if (!res.ok) throw new Error("Книга не знайдена");
     const book = await res.json();
 
-    document.getElementById("book-detail").innerHTML = `
-      <h2>${book.title}</h2>
-      <p>${book.description}</p>
-      <p><b>Жанр:</b> ${book.genre}</p>
-      <p><b>Ціна:</b> $${book.price}</p>
+    const bookDetail = document.getElementById("book-detail");
+
+    const imageUrl = book.cover || book.image_url || "https://via.placeholder.com/300x450";
+    const year = book.year || "Невідомо";
+    const genre = book.genre || "Невідомо";
+    const description = book.description || "Опис відсутній";
+
+    bookDetail.innerHTML = `
+      <div class="book-details">
+        <img src="${imageUrl}" alt="Обкладинка книги">
+        <div class="info">
+          <h2>${book.title}</h2>
+          <p><span class="label">Жанр:</span> ${genre}</p>
+          <p><span class="label">Рік:</span> ${year}</p>
+          <p><span class="label">Опис:</span> ${description}</p>
+        </div>
+      </div>
     `;
   } catch (err) {
     alert(err.message);
   }
 }
 
-// --- Завантаження книг з фільтрами ---
+// --- Фільтри ---
 function setupFilters() {
   const searchInput = document.getElementById("search");
   const genreSelect = document.getElementById("genre");
@@ -191,6 +204,7 @@ function setupFilters() {
   });
 }
 
+// --- Завантаження книг ---
 async function loadBooks() {
   const search = document.getElementById("search")?.value.trim() || "";
   const genre = document.getElementById("genre")?.value || "";
@@ -212,16 +226,19 @@ async function loadBooks() {
     if (!list) return;
 
     list.innerHTML = books.length
-      ? books.map(book => `
-        <div class="book-card">
-          <a href="book_detail.html?id=${book.id}">
-            <img src="${book.cover || "https://via.placeholder.com/100x150"}" alt="Обкладинка ${book.title}">
-            <h3>${book.title}</h3>
-          </a>
-          <p><b>Жанр:</b> ${book.genre}</p>
-          <p><b>Ціна:</b> $${book.price}</p>
-        </div>
-      `).join("")
+      ? books.map(book => {
+          const imageUrl = book.cover || book.image_url || "https://via.placeholder.com/100x150";
+          return `
+            <div class="book-card">
+              <a href="book_detail.html?id=${book.id}">
+                <img src="${imageUrl}" alt="Обкладинка ${book.title}">
+                <h3>${book.title}</h3>
+              </a>
+              <p><b>Жанр:</b> ${book.genre}</p>
+              <p><b>Ціна:</b> $${book.price || "N/A"}</p>
+            </div>
+          `;
+        }).join("")
       : "<p>Книги не знайдено</p>";
   } catch (err) {
     alert(err.message);
@@ -259,18 +276,18 @@ async function confirmPasswordReset(token, newPassword) {
 }
 
 // --- Попап ---
-const openPopUp = document.getElementById('open_pop_up');
-const closePopUp = document.getElementById('pop_up_close');
-const popUp = document.getElementById('pop_up');
+const openPopUp = document.getElementById("open_pop_up");
+const closePopUp = document.getElementById("pop_up_close");
+const popUp = document.getElementById("pop_up");
 
 if (openPopUp && closePopUp && popUp) {
-  openPopUp.addEventListener('click', function (e) {
+  openPopUp.addEventListener("click", function (e) {
     e.preventDefault();
-    popUp.classList.add('openwin');
+    popUp.classList.add("openwin");
   });
 
-  closePopUp.addEventListener('click', () => {
-    popUp.classList.remove('openwin');
+  closePopUp.addEventListener("click", () => {
+    popUp.classList.remove("openwin");
   });
 }
 
