@@ -305,9 +305,24 @@ if (document.getElementById("reset-confirm-form")) {
   });
 }
 
-document.getElementById("recoveryForm").addEventListener("submit", async (e) => {
+document.getElementById("recoveryForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("recoveryEmail").value.trim();
+  
+  const emailInput = document.getElementById("recoveryEmail");
+  const resultDiv = document.getElementById("recoveryResult");
+
+  if (!emailInput || !resultDiv) {
+    console.error("Не знайдено елементи форми відновлення");
+    return;
+  }
+
+  const email = emailInput.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    resultDiv.innerText = "Введіть коректну email-адресу";
+    resultDiv.style.color = "red";
+    return;
+  }
 
   try {
     const res = await fetch(`${API}/password-reset/`, {
@@ -316,18 +331,22 @@ document.getElementById("recoveryForm").addEventListener("submit", async (e) => 
       body: JSON.stringify({ email }),
     });
 
-    const resultDiv = document.getElementById("recoveryResult");
+    
     if (res.ok) {
       resultDiv.innerText = "Лист для скидання пароля надіслано!";
       resultDiv.style.color = "green";
     } else {
-      resultDiv.innerText = "Помилка при відправці листа";
+      const data = await res.json();
+      resultDiv.innerText = data.detail || "Помилка при відправці листа";
       resultDiv.style.color = "red";
     }
   } catch (err) {
-    document.getElementById("recoveryResult").innerText = "Помилка мережі";
+    console.error(err);
+    resultDiv.innerText = "Помилка мережі. Спробуйте пізніше.";
+    resultDiv.style.color = "red";
   }
 });
+
 // --- Попап ---
 const openPopUp = document.getElementById("open_pop_up");
 const closePopUp = document.getElementById("pop_up_close");
