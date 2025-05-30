@@ -171,17 +171,17 @@ async function loadBookDetail() {
     const bookDetail = document.getElementById("book-detail");
 
     const imageUrl = book.cover || book.image_url || "https://via.placeholder.com/300x450";
-    const year = book.year || "Невідомо";
+    const rating = book.rating || "Невідомо";
     const genre = book.genre || "Невідомо";
     const description = book.description || "Опис відсутній";
 
     bookDetail.innerHTML = `
       <div class="book-details">
-        <img src="${imageUrl}" alt="Обкладинка книги">
+        <img src="${imageUrl}" alt="Обкладинка ${book.title}">
         <div class="info">
           <h2>${book.title}</h2>
           <p><span class="label">Жанр:</span> ${genre}</p>
-          <p><span class="label">Рік:</span> ${year}</p>
+          <p><span class="label">Рейтинг:</span> ${rating}</p>
           <p><span class="label">Опис:</span> ${description}</p>
         </div>
       </div>
