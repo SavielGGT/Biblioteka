@@ -99,19 +99,20 @@ main{
 }
 
 .auth-buttons button {
-  padding: 5px 15px;
-  font-size: 14px;
-  background-color: #7C6363;
+  padding: 6px 14px;
+  font-size: 15px;
+  background-color: #7C6363; 
   color: white;
-  border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: none;
 }
 
 .auth-buttons button:hover {
-  background-color: #554444;
+  background-color: #3d3030;
+  transform: scale(1.05);
 }
+
 
 #admin-button {
   background-color: #333;
