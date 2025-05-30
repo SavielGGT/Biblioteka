@@ -197,11 +197,11 @@ async function loadBookDetail() {
 function setupFilters() {
   const searchInput = document.getElementById("search");
   const genreSelect = document.getElementById("genre");
-  const priceSelect = document.getElementById("price");
+  const ratingSelect = document.getElementById("rating");
 
-  if (!searchInput || !genreSelect || !priceSelect) return;
+  if (!searchInput || !genreSelect || !ratingSelect) return;
 
-  [searchInput, genreSelect, priceSelect].forEach(el => {
+  [searchInput, genreSelect, ratingSelect].forEach(el => {
     el.addEventListener("input", () => loadBooks());
   });
 }
@@ -210,12 +210,12 @@ function setupFilters() {
 async function loadBooks() {
   const search = document.getElementById("search")?.value.trim() || "";
   const genre = document.getElementById("genre")?.value || "";
-  const price = document.getElementById("price")?.value || "";
+  const rating = document.getElementById("rating")?.value || "";
 
   let query = [];
   if (search) query.push(`search=${encodeURIComponent(search)}`);
   if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
-  if (price) query.push(`price=${encodeURIComponent(price)}`);
+  if (rating) query.push(`price=${encodeURIComponent(rating)}`);
 
   const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
 
