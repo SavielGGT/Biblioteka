@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 
 class Command(BaseCommand):
-    help = 'Парсинг книг з books.toscrape.com (назва, жанр, ціна, локальне зображення)'
+    help = 'Парсинг книг з books.toscrape.com: назва, жанр, ціна, локальний шлях до зображення'
 
     def handle(self, *args, **kwargs):
         base_url = "https://books.toscrape.com/"
@@ -33,47 +33,45 @@ class Command(BaseCommand):
         for book in book_items:
             title = book.h3.a['title'].strip()
 
-            # Витягуємо шлях до зображення (відносний, типу '../../media/cache/...')
-            img_tag = book.select_one('img')
-            raw_img_url = img_tag['src']  # приклад: '../../media/cache/xx/xx/image.jpg'
+            # Отримуємо raw шлях до зображення (наприклад: ../../media/cache/xx/xx/image.jpg)
+            raw_img_src = book.find('img')['src']  # типу: ../../media/cache/2c/da/img.jpg
 
-            # Очистимо шлях: заберемо '../' на початку, отримаємо 'media/cache/...'
-            if raw_img_url.startswith('../../'):
-                local_img_path = raw_img_url.replace('../../', '', 1)
+            # Очищаємо до формату media/cache/2c/da/img.jpg
+            if raw_img_src.startswith('../../'):
+                image_path = raw_img_src.replace('../../', '')
+            elif raw_img_src.startswith('../'):
+                image_path = raw_img_src.replace('../', '')
             else:
-                local_img_path = raw_img_url.lstrip('/')
+                image_path = raw_img_src
 
-            # Повна URL-адреса на сайті (не зберігаємо, але можемо використовувати при потребі)
-            # full_image_url = urljoin(base_url, raw_img_url)
+            # Тепер image_path — це "media/cache/xx/xx/назва.jpg"
+            # І саме такий шлях потрібен для шаблону <img src="media/cache/...">
+            
+            # Посилання на сторінку з деталями
+            detail_href = book.h3.a['href']
+            detail_url = urljoin(base_url, detail_href)
 
-            # Посилання на сторінку книги
-            detail_relative_url = book.h3.a['href']
-            detail_url = urljoin(base_url, detail_relative_url)
-
-            # Ініціалізація
+            # Парсимо детальну сторінку
             genre = ''
             price = None
-
-            # Деталі з внутрішньої сторінки
             detail_resp = requests.get(detail_url, headers=headers)
             if detail_resp.status_code == 200:
                 detail_soup = BeautifulSoup(detail_resp.text, 'html.parser')
 
-                # Жанр
-                breadcrumb_items = detail_soup.select('ul.breadcrumb li a')
-                if len(breadcrumb_items) >= 3:
-                    genre = breadcrumb_items[2].text.strip()
+                # Жанр: breadcrumb -> третій пункт
+                breadcrumb_links = detail_soup.select('ul.breadcrumb li a')
+                if len(breadcrumb_links) >= 3:
+                    genre = breadcrumb_links[2].text.strip()
 
                 # Ціна
                 price_tag = detail_soup.select_one('p.price_color')
                 if price_tag:
                     try:
-                        price_text = price_tag.text.strip()
-                        price = float(price_text.replace('£', ''))
+                        price = float(price_tag.text.strip().lstrip('£'))
                     except ValueError:
                         price = None
 
-            # Збереження
+            # Зберігаємо або оновлюємо книгу
             book_obj, created = Book.objects.update_or_create(
                 title=title,
                 defaults={
@@ -83,11 +81,9 @@ class Command(BaseCommand):
                     'price': price,
                     'rating': None,
                     'description': '',
-                    'image_url': local_img_path,  # ✅ тільки відносний шлях
+                    'image_url': image_path  # ← саме тут правильний формат!
                 }
             )
 
-            if created:
-                self.stdout.write(self.style.SUCCESS(f"✅ Додано: {title}"))
-            else:
-                self.stdout.write(self.style.SUCCESS(f"🔄 Оновлено: {title}"))
+            status = "✅ Додано" if created else "🔄 Оновлено"
+            self.stdout.write(self.style.SUCCESS(f"{status}: {title} — {image_path} — £{price} — {genre}"))
