@@ -1,3 +1,5 @@
+# books/models.py
+
 from django.db import models
 
 class Book(models.Model):
@@ -7,6 +9,7 @@ class Book(models.Model):
     year = models.PositiveIntegerField(blank=True, null=True)
     rating = models.FloatField(blank=True, null=True)
     description = models.TextField(blank=True)
+    price = models.FloatField(blank=True, null=True)  # ← додано поле price
     image_url = models.URLField(blank=True, null=True)
     source_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
