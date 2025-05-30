@@ -1,25 +1,43 @@
 .books-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 10px;
 }
 
 .book-card {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: center;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: #fafafa;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 .book-card img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
 }
+
+.book-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.book-card p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
 
 
 /* -body для всіх html- */
