@@ -215,7 +215,7 @@ async function loadBooks() {
   let query = [];
   if (search) query.push(`search=${encodeURIComponent(search)}`);
   if (genre) query.push(`genre=${encodeURIComponent(genre)}`);
-  if (rating) query.push(`price=${encodeURIComponent(rating)}`);
+  if (rating) query.push(`rating=${encodeURIComponent(rating)}`);
 
   const url = `${API}/books/${query.length ? "?" + query.join("&") : ""}`;
 
