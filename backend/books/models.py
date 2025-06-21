@@ -10,6 +10,7 @@ class Book(models.Model):
     image_url = models.URLField(blank=True, null=True)
     source_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    price = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.title} by {self.author or 'Unknown'}"
