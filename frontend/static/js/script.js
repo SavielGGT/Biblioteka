@@ -1,4 +1,4 @@
-const API = "http://18.194.107.174/api";
+const API = "http://localhost/api";
 
 // --- DOMContentLoaded ---
 document.addEventListener("DOMContentLoaded", () => {
